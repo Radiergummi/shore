@@ -33,5 +33,3 @@ echo $app->run(
     $_COOKIE,
     $_SESSION ?? []
 );
-
-echo microtime(true) - START;

@@ -6,10 +6,10 @@
  * Time: 16:12
  */
 
-// Create an application instance
 use Shore\Framework\Application;
 use Shore\Framework\Facade;
 
+// Create an application instance
 $app = new Application([]);
 
 // Enable facades
