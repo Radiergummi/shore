@@ -1,0 +1,13 @@
+{
+  "name": "rest-api",
+  "version": "0.0.1",
+  "autoload": {
+    "psr-4": {
+      "Shore\\Framework\\": "lib/",
+      "Shore\\App\\": "app/"
+    }
+  },
+  "require": {
+    "psr/container": "^1.0"
+  }
+}
