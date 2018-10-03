@@ -8,6 +8,7 @@ composer.phar
 composer.lock
 
 # Application custom code
+!app/**/.gitignore
 app/config/**
 app/Controllers/**
 app/Facades/**
