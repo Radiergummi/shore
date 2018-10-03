@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 10:25
- */
 
 namespace Shore\Framework\Http;
 
@@ -18,6 +12,14 @@ use Shore\Framework\RequestInterface;
 use Shore\Framework\ResponseInterface;
 use Shore\Framework\RouterInterface;
 
+/**
+ * Kernel
+ * ======
+ *
+ * The kernel acts as the main middleware in the stack. It routes requests to handler methods.
+ *
+ * @package Shore\Framework\Http
+ */
 class Kernel implements MiddlewareInterface
 {
     protected $application;
@@ -88,6 +90,8 @@ class Kernel implements MiddlewareInterface
         // If the handler didn't return a response instance, we'll set the body of the response to whatever
         // the handler returned. The response itself will take care of format conversion.
         if (! $output instanceof ResponseInterface) {
+
+            /** @var \Shore\Framework\MessageInterface $response */
             return $response->withBody($output);
         }
 

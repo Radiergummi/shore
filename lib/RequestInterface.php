@@ -1,16 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 12:08
- */
 
 namespace Shore\Framework;
 
 use Shore\Framework\Http\Request\Body;
 use Shore\Framework\Http\Request\Query;
 
+/**
+ * Request interface
+ * =================
+ *
+ * This interface describes HTTP request objects. All methods are convenience methods, eg., they provide access to the
+ * request details with simple methods.
+ *
+ * @package Shore\Framework
+ */
 interface RequestInterface
 {
     public function uri(string $append = null): string;

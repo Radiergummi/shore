@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 28.09.2018
- * Time: 15:05
- */
 
 namespace Shore\Framework;
 
@@ -16,8 +10,17 @@ use Shore\Framework\Routing\Router;
 use Throwable;
 
 /**
- * Application base class. Objects of this type act as a PSR-11 compatible application container that is able to
- * provide services.
+ * Application
+ * ===========
+ * The core of a shore application. It's primary job is handling the request and creating a string response, plus wiring
+ * all the core stuff together in the constructor.
+ *
+ * Of course, you can also roll your own application. Objects of this type act as a PSR-11 compatible application
+ * container that is able to provide services.
+ *
+ * From here on, exploration can take multiple paths. To learn more about the middleware stack, proceed to
+ * lib/Http/Server.php. For the router, go to lib/Routing/Router.php, and to see the actual request handling, take a
+ * look at lib/Http/Kernel.php.
  *
  * @package Shore\Framework
  */

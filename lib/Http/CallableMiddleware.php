@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 11:30
- */
 
 namespace Shore\Framework\Http;
 
@@ -13,11 +7,23 @@ use Shore\Framework\RequestHandlerInterface;
 use Shore\Framework\RequestInterface;
 use Shore\Framework\ResponseInterface;
 
+/**
+ * Callable middleware
+ * ===================
+ * The callable middleware wraps around a callable and creates a middleware instance that simply calls the callable.
+ *
+ * @package Shore\Framework\Http
+ */
 class CallableMiddleware implements MiddlewareInterface
 {
+    /**
+     * Holds the middleware callable
+     *
+     * @var callable
+     */
     protected $callable;
 
-    public function __construct($middleware)
+    public function __construct(callable $middleware)
     {
         $this->callable = $middleware;
     }

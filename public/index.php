@@ -1,9 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 28.09.2018
- * Time: 15:03
+ * Shore entry point
+ * =================
+ *
+ * This file starts your application. It defines a few constants to tell the app where the code is to be found,
+ * bootstraps the app and echo's the response. As a side note: This is the only framework file using the path constants.
+ * You are free to just use static paths here.
+ *
+ * To dig deeper, you might want to look at the bootstrap.php file.
  */
 
 define('START', microtime(true));

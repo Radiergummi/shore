@@ -1,15 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 15:12
- */
 
 namespace Shore\Framework;
 
 use Exception;
 
+/**
+ * JSON parsing trait
+ * ==================
+ * This trait adds two methods to a class, that allow for safeguarded JSON handling. If anything goes wrong, they will
+ * throw an exception.
+ *
+ * @package Shore\Framework
+ */
 trait JsonParsing
 {
     /**

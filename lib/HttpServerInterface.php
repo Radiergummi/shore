@@ -1,13 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 12:12
- */
 
 namespace Shore\Framework;
 
+/**
+ * HTTP server interface
+ * =====================
+ * This interface defines the public API of our HTTP server.
+ *
+ * @package Shore\Framework
+ */
 interface HttpServerInterface
 {
     /**

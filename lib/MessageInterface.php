@@ -1,14 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 13:30
- */
 
 namespace Shore\Framework;
 
 /**
+ * HTTP message interface
+ * ======================
+ * This interface closely follows the PSR-7 definition to stay *almost* compatible, except for stream bodies and frozen
+ * objects (ie. non-modifiable).
+ *
  * HTTP messages consist of requests from a client to a server and responses from a server to a client. This interface
  * defines the methods common to each.
  *

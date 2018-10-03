@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 10:35
- */
 
 namespace Shore\Framework;
 
 /**
- * Provides an interface for middleware
+ * Middleware interface
+ * ====================
+ * Provides an interface for middleware that is - apart from the PSR-7 messages - equivalent to PSR-15.
  *
  * @package Shore\Framework
  */

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 09:25
- */
 
 namespace Shore\Framework;
 
@@ -12,6 +6,8 @@ use Shore\Framework\Exception\ServiceMissingException;
 use Psr\Container\ContainerInterface;
 
 /**
+ * Container
+ * =========
  * PSR-11 compatible container implementation. The container provides dependency injection via named services, which
  * makes it possible to stay implementation agnostic and easily swap out services later on, without any hard-wired
  * dependencies across the code.
@@ -21,7 +17,7 @@ use Psr\Container\ContainerInterface;
  *
  * @package Shore\Framework
  */
-class Container implements ContainerInterface
+abstract class Container implements ContainerInterface
 {
     /**
      * Holds all services the application container provides as a key-value map (service id => service object)

@@ -1,9 +1,13 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 16:12
+ * Shore bootstrap script
+ * ======================
+ *
+ * This is where the magic happens. A new application instance is booted, the facades are initialized and the routes are
+ * loaded into the router. The next step will be executing your middleware, then routing the request.
+ *
+ * To dig deeper, you could take a peek into the Application class at lib/Application.php.
  */
 
 use Shore\Framework\Application;

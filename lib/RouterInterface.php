@@ -1,15 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 11:26
- */
 
 namespace Shore\Framework;
 
 use Shore\Framework\Routing\Route;
 
+/**
+ * Router interface
+ * =================
+ * This interface allows you to swap the router definition, should you want to roll your own. The neat thing about this
+ * is that shore is completely built around this interface, so even the facade API stays the same if you use another.
+ *
+ * @package Shore\Framework
+ */
 interface RouterInterface
 {
     public function match(RequestInterface $request): Route;

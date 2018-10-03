@@ -1,13 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 12:06
- */
 
 namespace Shore\Framework;
 
+/**
+ * Response interface
+ * ==================
+ * This interface defines the public API for response objects.
+ *
+ * @package Shore\Framework
+ */
 interface ResponseInterface
 {
     public function dispatch(): string;

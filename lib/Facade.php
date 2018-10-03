@@ -1,15 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 14:56
- */
 
 namespace Shore\Framework;
 
 use Psr\Container\ContainerInterface;
 
+/**
+ * Facade base class
+ * =================
+ * This is the base class for facades to inherit from. It's pretty simple, really. The base class gets initialized with
+ * the application instance once, storing it statically. Every other facade inherits from this class, so they will all
+ * share the facade application. Therefore, we only need to know the name of the service to be able to call methods on
+ * it throughout the application: Static calls, mapped to instance methods. Neat.
+ *
+ * @package Shore\Framework
+ */
 abstract class Facade
 {
     /**

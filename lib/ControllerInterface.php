@@ -1,13 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 18:38
- */
 
 namespace Shore\Framework;
 
+/**
+ * Controller interface
+ * ====================
+ * This interface, while not having any methods, simply denotes a class as a controller.
+ *
+ * @package Shore\Framework
+ */
 interface ControllerInterface
 {
 

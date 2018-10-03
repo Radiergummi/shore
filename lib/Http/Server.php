@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 11:29
- */
 
 namespace Shore\Framework\Http;
 
@@ -16,7 +10,9 @@ use Shore\Framework\RequestInterface;
 use Shore\Framework\ResponseInterface;
 
 /**
- * Provides an HTTP "server" that will process incoming requests. The server expects to be passed middleware.
+ * Middleware server
+ * =================
+ * Provides an HTTP "server" that will process incoming requests. The server handles the full middleware stack.
  *
  * @package Shore\Framework\Http
  */

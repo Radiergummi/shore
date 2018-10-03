@@ -1,13 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 02.10.2018
- * Time: 15:53
- */
 
 namespace Shore\Framework\Http\Response;
 
+/**
+ * Headers definition
+ * ==================
+ * This class acts as an enum, holding common request headers.
+ *
+ * @package Shore\Framework\Http\Response
+ */
 class Headers
 {
     public const CONTENT_TYPE = 'Content-Type';
