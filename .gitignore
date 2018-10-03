@@ -8,10 +8,11 @@ composer.phar
 composer.lock
 
 # Application custom code
-!app/**/.gitignore
 app/config/**
 app/Controllers/**
 app/Facades/**
+app/Middleware/**
 app/routes/**
 !app/routes/main.php
 app/Services/**
+!app/**/.gitignore
