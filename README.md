@@ -89,6 +89,21 @@ $middleware = function(\Shore\Framework\Http\Request $request, \Shore\Framework\
 };
 ```
 
+To load middleware into your stack, add the `middleware` key to your application config array and insert middleware 
+instances into that:
+
+```php
+<?php
+return [
+    'middleware' => [
+        new MyFirstMiddleware(),
+        new MySecondMiddleware($withConfiguration)
+    ]
+];
+```
+
+They will be loaded in order of occurrence.
+
 ## Facades
 Maybe you've spotted the `Facade` classes already. These are special classes that allow accessing instance methods on 
 your services via static calls, which makes certain aspects easier to handle - without giving up on dependency 
