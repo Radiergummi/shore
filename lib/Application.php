@@ -36,6 +36,9 @@ class Application extends Container
         // Register the configuration
         $this->register('config', $config);
 
+        // Collect the middleware to load
+        $middleware = array_key_exists('middleware', $config) ? $config['middleware'] : [];
+
         // Register the router using the router interface as the service ID. This allows to swap the router
         // for another implementation later in the product lifecycle, as long as it implements the interface.
         $this->register(RouterInterface::class, new Router());
@@ -49,7 +52,7 @@ class Application extends Container
 
         // Create a new server instance. The server runs through all middleware layers, passing request and response
         // between them.
-        $server = new Server([$kernel]);
+        $server = new Server(array_merge($middleware, [$kernel]));
 
         // Register the server
         $this->register(HttpServerInterface::class, $server);

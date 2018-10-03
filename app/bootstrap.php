@@ -13,8 +13,11 @@
 use Shore\Framework\Application;
 use Shore\Framework\Facade;
 
+// Load the application config
+$config = require_once __DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'app.php';
+
 // Create an application instance
-$app = new Application([]);
+$app = new Application($config);
 
 // Enable facades
 Facade::setApplication($app);
