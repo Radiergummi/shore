@@ -16,6 +16,10 @@ me from implementing PSR-7 all together, as well as the PSR-15 middleware standa
 So if you're looking for a small alternative to Laravel, Symfony at al to build your system upon, you've come to the 
 right place.
 
+## Getting started
+Shore has no fixed layout whatsoever. There are three constants in the [index.php](./public/index.php) that define where
+the code for your application is to be found. Just add some routes and build up the layout you desire.
+
 ## Defining routes
 All routing has to happen in the main routes file which is `require_once`'d in [`app/bootstrap`](./app/bootstrap.php).  
 Let's look at an example:  
