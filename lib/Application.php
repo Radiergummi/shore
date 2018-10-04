@@ -33,6 +33,19 @@ class Application extends Container
      */
     public function __construct($config)
     {
+        if (
+            array_key_exists('errors', $config) &&
+            array_key_exists('formatter', $config['errors'])
+        ) {
+            $errorHandler = new ErrorHandler($config['errors']['formatter']);
+
+            if (array_key_exists('handler', $config['errors'])) {
+                $errorHandler->setHandler($config['errors']['handler']);
+            }
+
+            $errorHandler->register();
+        }
+
         // Register the configuration
         $this->register('config', $config);
 
