@@ -63,13 +63,16 @@ class Kernel implements MiddlewareInterface
         // Find a route
         $route = $this->router->match($request);
 
+        // Add the URI arguments to the params
+        $request->params()->addArgs($route->getArgs());
+
         // Bind the handler to the application
-        $handler = $route
-            ->getHandler()
-            ->bindTo($this->application);
+        $handler = $route->getHandler();
+        $method = $route->getMethod();
 
         try {
-            $output = $handler(
+            $output = call_user_func(
+                [$handler, $method],
                 $request,
                 $response,
                 ...array_values($route->getArgs())
@@ -90,8 +93,7 @@ class Kernel implements MiddlewareInterface
         // If the handler didn't return a response instance, we'll set the body of the response to whatever
         // the handler returned. The response itself will take care of format conversion.
         if (! $output instanceof ResponseInterface) {
-
-            /** @var \Shore\Framework\MessageInterface $response */
+            /** @var \Shore\Framework\MessageInterface|\Shore\Framework\ResponseInterface $response */
             return $response->withBody($output);
         }
 

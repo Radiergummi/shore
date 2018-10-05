@@ -30,17 +30,22 @@ class Request extends Message implements RequestInterface
      */
     protected $params;
 
+    /**
+     * Holds the args
+     *
+     * @var array
+     */
     protected $args = [];
 
     /**
      * Request constructor.
      *
      * @param \Shore\Framework\Application $application
-     * @param array                             $server
-     * @param array                             $request
-     * @param array                             $query
-     * @param array                             $body
-     * @param array                             $files
+     * @param array                        $server
+     * @param array                        $request
+     * @param array                        $query
+     * @param array                        $body
+     * @param array                        $files
      *
      * @throws \Exception If the request body can't be parsed
      */
@@ -79,6 +84,11 @@ class Request extends Message implements RequestInterface
         return $this->body;
     }
 
+    public function args()
+    {
+        return $this->args;
+    }
+
     /**
      * Retrieves a body field
      *
@@ -112,6 +122,25 @@ class Request extends Message implements RequestInterface
     }
 
     /**
+     * Sets the request path
+     *
+     * @param string $path
+     *
+     * @return \Shore\Framework\RequestInterface
+     */
+    public function withPath(string $path): RequestInterface
+    {
+        $this->server['PATH_INFO'] = $path;
+
+        return $this;
+    }
+
+    public function path(string $append = null): string
+    {
+        return $this->server['PATH_INFO'] . $append;
+    }
+
+    /**
      * Retrieves the current HTTP request method
      *
      * @return string
@@ -119,6 +148,20 @@ class Request extends Message implements RequestInterface
     public function method(): string
     {
         return $this->server['REQUEST_METHOD'];
+    }
+
+    /**
+     * Sets the request method
+     *
+     * @param string $method
+     *
+     * @return \Shore\Framework\RequestInterface
+     */
+    public function withMethod(string $method): RequestInterface
+    {
+        $this->server['REQUEST_METHOD'] = $method;
+
+        return $this;
     }
 
     /**
@@ -148,6 +191,11 @@ class Request extends Message implements RequestInterface
         return PHP_SAPI === 'cli';
     }
 
+    /**
+     * Retrieves all request headers
+     *
+     * @return array
+     */
     public function headers(): array
     {
         return $this->loadHeaders();

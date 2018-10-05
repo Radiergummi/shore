@@ -125,7 +125,7 @@ class Router implements RouterInterface
             $this->routes[$method] = [];
         }
 
-        $this->routes[$method][$uri] = $route;
+        $this->routes[$method][$route->getUri()] = $route;
     }
 
     /**
@@ -151,7 +151,7 @@ class Router implements RouterInterface
     public function match(RequestInterface $request): Route
     {
         $requestMethod = $request->method();
-        $requestUri = $request->uri();
+        $requestUri = $request->path();
 
         // If the request method doesn't exist, something seems to be fucked up.
         if (! isset($this->routes[$requestMethod])) {

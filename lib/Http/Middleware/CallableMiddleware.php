@@ -1,6 +1,6 @@
 <?php
 
-namespace Shore\Framework\Http;
+namespace Shore\Framework\Http\Middleware;
 
 use Shore\Framework\MiddlewareInterface;
 use Shore\Framework\RequestHandlerInterface;

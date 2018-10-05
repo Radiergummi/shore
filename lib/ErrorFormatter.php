@@ -12,27 +12,55 @@ use Throwable;
 
 class ErrorFormatter
 {
-    public const CONTEXT_LINES = 15;
-
     protected $template = <<<TEMPLATE
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/php.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+<script>
+    /* global hljs */
+    hljs.initHighlightingOnLoad();
+    document.addEventListener('DOMContentLoaded', () => {
+        const sourceContainer = document.querySelector('.code-extract');
+        const targetLine = document.querySelector('.line-origin');
+        
+        if (!targetLine) {
+          return;
+        }
+        
+        sourceContainer.scrollTop = targetLine.offsetTop - (targetLine.offsetHeight * 10);
+    });
+</script>
 <style>
     * {
         box-sizing: border-box;
     }
-
+    
+    html,
     body {
-        display: flex;
-        flex-wrap: wrap;
         height: 100vh;
         margin: 0;
+        padding: 0;
+    }
+
+    body {
         font-family: sans-serif;
+        overflow: hidden;
+    }
+    
+    .main-content {
+        display: flex;
+        flex-wrap: wrap;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
         background: #404040;
         color: #d0d0f0;
-        overflow: hidden;
     }
     
     .error-details,
     .error-source-code {
+        position: relative;
         height: 100vh;
     }
     
@@ -131,6 +159,7 @@ class ErrorFormatter
     .error-environment {
         overflow: auto;
         padding: 1rem 0;
+        max-height: 50vh;
     }
     
     .error-environment .environment-list {
@@ -179,13 +208,20 @@ class ErrorFormatter
         padding: 1rem 0;
         border-bottom: 1px solid #303030;
         font-size: 1.2rem;
+        line-height: 1;
         font-weight: bold;
     }
 
     .code-extract {
-        height: 100%%;
+        height: calc(100%% - 4rem);
         margin: 1rem 0 0;
         overflow-x: auto;
+        counter-reset: lineCount;
+    }
+    
+    .code-extract .hljs {
+        background: #202020;
+        padding: 0;
     }
 
     .line {
@@ -193,16 +229,25 @@ class ErrorFormatter
         padding: 0 1rem;
         line-height: 1.6;
         font-size: 0.9rem;
+        counter-increment: lineCount;
+        white-space: pre;
     }
     
-    .line-number {
+    .line::before {
+        display: inline-block;
+        width: 2rem;
+        content: counter(lineCount);
+        text-align: right;
+        margin-right: 0.5rem;
         opacity: 0.25;
         user-select: none;
     }
+    
+    .line-number {
+    }
 
     .line-origin {
-        color: #e94854;
-        background: #303030
+        background: rgba(177,38,34,0.5)
     }
     
     .line:hover {
@@ -210,7 +255,7 @@ class ErrorFormatter
         transition: all 0.125s;
     }
     
-    .line-origin .line-number {
+    .line-origin::before {
         opacity: 0.75;
     }
     
@@ -228,22 +273,24 @@ class ErrorFormatter
         background: rgba(255,255,255,0.2);
     }
 </style>
-<article class="error-details">
-    <header class="error-meta">
-        <h1 class="error-type">%s</h1>
-        <p class="error-message">%s</p>        
-    </header>
-    <section class="error-trace">
-        <ul class="error-trace-list">%s</ul>
-    </section>
-    <section class="error-environment">
-        <ul class="environment-list">%s</ul>
-    </section>
-</article>
-<article class="error-source-code">
-    <code class="code-extract-path">%s</code>
-    <pre class="code-extract">%s</pre>
-</article>
+<main class="main-content">
+    <article class="error-details">
+        <header class="error-meta">
+            <h1 class="error-type">%s</h1>
+            <p class="error-message">%s</p>        
+        </header>
+        <section class="error-trace">
+            <ul class="error-trace-list">%s</ul>
+        </section>
+        <section class="error-environment">
+            <ul class="environment-list">%s</ul>
+        </section>
+    </article>
+    <article class="error-source-code">
+        <code class="code-extract-path">%s</code>
+        <pre class="code-extract"><code class="code-extract-lines language-php">%s</code></pre>
+    </article>
+</main>
 TEMPLATE;
 
     /**
@@ -257,7 +304,8 @@ TEMPLATE;
     {
         $file = $exception->getFile();
         $line = $exception->getLine();
-        $type = get_class($exception);
+        $typeClass = explode('\\', get_class($exception));
+        $type = array_pop($typeClass);
         $message = $exception->getMessage();
         $trace = $this->buildTrace($exception->getTrace());
         $environment = $this->getEnvironment();
@@ -278,7 +326,7 @@ TEMPLATE;
     {
         $traceData = '';
 
-        foreach (array_slice($stackTrace, 1) as $index => $frame) {
+        foreach ($stackTrace as $index => $frame) {
             $classSegments = explode('\\', $frame['class'] ?? '');
             $className = strpos($frame['class'], 'class@anonymous' === false)
                 ? '[anonymous]'
@@ -300,10 +348,10 @@ TEMPLATE;
                 $index,
                 $className,
                 $frame['type'] . $frame['function'],
-                $frame['file'],
-                $frame['line'],
-                substr($frame['file'], strlen(ROOT)),
-                $frame['line']
+                $frame['file'] ?? '',
+                $frame['line'] ?? 0,
+                substr($frame['file'] ?? '', strlen(ROOT)),
+                $frame['line'] ?? 0
             );
         }
 
@@ -334,17 +382,14 @@ TEMPLATE;
         $lines = file($path);
         $extract = '';
 
-        $firstLine = $line - static::CONTEXT_LINES;
-        $lastLine = $line + static::CONTEXT_LINES;
-
-        for ($lineNumber = $firstLine; $lineNumber <= $lastLine; $lineNumber++) {
+        for ($lineNumber = 0; $lineNumber < count($lines); $lineNumber++) {
             $currentLine = $lines[$lineNumber];
 
             $extract .= sprintf(
-                '<span class="%s"><span class="line-number">%d</span><code>%s</code></span>',
-                $lineNumber === $line - 1 ? 'line line-origin' : 'line',
+                '<div id="line-%d" class="%s php">%s</div>',
                 $lineNumber + 1,
-                $currentLine
+                $lineNumber === $line - 1 ? 'line line-origin' : 'line',
+                htmlentities($currentLine)
             );
         }
 

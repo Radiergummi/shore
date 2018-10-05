@@ -3,6 +3,7 @@
 namespace Shore\Framework\Http;
 
 use Shore\Framework\Exception\Middleware\InvalidMiddlewareException;
+use Shore\Framework\Http\Middleware\CallableMiddleware;
 use Shore\Framework\HttpServerInterface;
 use Shore\Framework\MiddlewareInterface;
 use Shore\Framework\RequestHandlerInterface;

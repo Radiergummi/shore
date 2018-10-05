@@ -11,5 +11,7 @@ namespace Shore\Framework\Http\Response;
  */
 class Headers
 {
+    public const LOCATION = 'Location';
+
     public const CONTENT_TYPE = 'Content-Type';
 }

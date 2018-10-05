@@ -2,7 +2,7 @@
 
 namespace Shore\Framework\Routing;
 
-use Closure;
+use Shore\Framework\Controller\CallableController;
 use Shore\Framework\ControllerInterface;
 use Shore\Framework\Exception\Router\InvalidRouteHandlerException;
 
@@ -20,9 +20,16 @@ class Route
     /**
      * Holds the route handler
      *
-     * @var \Closure
+     * @var ControllerInterface
      */
     protected $handler;
+
+    /**
+     * Holds the route handler method name
+     *
+     * @var string
+     */
+    protected $method;
 
     /**
      * Holds all URI arguments the route has
@@ -33,8 +40,18 @@ class Route
 
     public function __construct(string $uri, $handler)
     {
-        $this->uri = $uri;
-        $this->handler = $handler;
+        $this->uri = rtrim($uri, '/') ?: '/';
+        $this->loadHandler($handler);
+    }
+
+    /**
+     * Retrieves the route URI
+     *
+     * @return string
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
     }
 
     /**
@@ -51,45 +68,42 @@ class Route
         return $this;
     }
 
+    /**
+     * Retrieves the route arguments
+     *
+     * @return array
+     */
     public function getArgs()
     {
         return $this->args;
     }
 
-    public function getHandler()
+    /**
+     * Loads the route handler
+     *
+     * @param $handler
+     */
+    public function loadHandler($handler): void
     {
-        // If we received a callable, return immediately
-        if (is_callable($this->handler)) {
-            return Closure::fromCallable($this->handler);
+        // If we received a callable, convert it into a controller
+        if (is_callable($handler)) {
+            $this->handler = new CallableController($handler);
+            $this->method = '__invoke';
+
+            return;
         }
 
         // If we did receive neither a callable nor a string, this is just a wrong argument, so bail
-        if (! is_string($this->handler)) {
-            throw new InvalidRouteHandlerException($this->handler);
-        }
-
-        // If there is no delimiter character in the handler string, this will either be a controller with a single
-        // `__invoke()` method or another wrong argument.
-        if (strpos($this->handler, static::CONTROLLER_DELIMITER) === false) {
-            // No such class - bail.
-            if (! class_exists($this->handler)) {
-                throw new InvalidRouteHandlerException($this->handler);
-            }
-
-            // Create a new controller instance
-            $controller = new $this->handler();
-
-            // Not callable - bail.
-            if (! is_callable($controller)) {
-                throw new InvalidRouteHandlerException($this->handler);
-            }
-
-            // Finally, return the controller instance
-            return Closure::fromCallable($controller);
+        if (! is_string($handler)) {
+            throw new InvalidRouteHandlerException($handler);
         }
 
         // Split the handler string at the delimiter character, so we receive class and method
-        list ($className, $method) = explode(static::CONTROLLER_DELIMITER, $this->handler);
+        $segments = explode(static::CONTROLLER_DELIMITER, $handler);
+
+        // Set class name and method. If no method has been specified, default to __invoke
+        $className = $segments[0];
+        $method = $segments[1] ?? '__invoke';
 
         // No such class - bail.
         if (! class_exists($className)) {
@@ -104,10 +118,30 @@ class Route
             ! $controller instanceof ControllerInterface ||
             ! method_exists($controller, $method)
         ) {
-            throw new InvalidRouteHandlerException($this->handler);
+            throw new InvalidRouteHandlerException($handler);
         }
 
-        // Return a closure
-        return Closure::fromCallable([$controller, $method]);
+        $this->handler = $controller;
+        $this->method = $method;
+    }
+
+    /**
+     * Retrieves the controller instance
+     *
+     * @return ControllerInterface
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    /**
+     * Retrieves the method instance
+     *
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
     }
 }

@@ -7,7 +7,6 @@ use Shore\Framework\Http\Request;
 use Shore\Framework\Http\Response;
 use Shore\Framework\Http\Server;
 use Shore\Framework\Routing\Router;
-use Throwable;
 
 /**
  * Application
@@ -83,6 +82,7 @@ class Application extends Container
      * @param array $session
      *
      * @return string
+     * @throws \Throwable
      */
     public function run(
         $server = [],
@@ -93,34 +93,31 @@ class Application extends Container
         $cookies = [],
         $session = []
     ): string {
-        try {
-            $request = new Request(
-                $this,
-                $server,
+        $request = new Request(
+            $this,
+            $server,
+            $request,
+            $query,
+            $body,
+            $files
+        );
+
+        // Keep the request object in the container
+        $this->register(RequestInterface::class, $request);
+
+        /** @var \Shore\Framework\HttpServerInterface $server */
+        $server = $this->get(HttpServerInterface::class);
+
+        // Run the server
+        return $server
+            ->run(
                 $request,
-                $query,
-                $body,
-                $files
-            );
-
-            $this->register(RequestInterface::class, $request);
-
-            /** @var \Shore\Framework\HttpServerInterface $server */
-            $server = $this->get(HttpServerInterface::class);
-
-            return $server
-                ->run(
-                    $request,
-                    function($request) {
-                        return $this
-                            ->get(ResponseInterface::class)
-                            ->withBody('this is default');
-                    }
-                )
-                ->dispatch();
-        } catch (Throwable $exception) {
-            // TODO Handle top-level errors
-            return $exception->getMessage() . "\n" . $exception->getTraceAsString();
-        }
+                function($request) {
+                    return $this
+                        ->get(ResponseInterface::class)
+                        ->withBody('this is default');
+                }
+            )
+            ->dispatch();
     }
 }

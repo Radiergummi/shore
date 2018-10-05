@@ -12,7 +12,7 @@ class Message implements MessageInterface
      *
      * @var array
      */
-    protected $headers;
+    protected $headers = [];
 
     /**
      * Holds the body instance

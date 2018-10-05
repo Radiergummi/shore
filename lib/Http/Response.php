@@ -100,6 +100,7 @@ class Response extends Message implements ResponseInterface
 
     public function __construct($body = '', int $status = 200, array $headers = [])
     {
+
         $this->withStatus($status);
         $this->withHeaders($headers);
         $this->withBody($body);
@@ -148,6 +149,21 @@ class Response extends Message implements ResponseInterface
         return $this;
     }
 
+    public function error($reason, $status = 500)
+    {
+        $this->withBody($reason);
+        $this->withStatus($status);
+    }
+
+    public function redirect($target, $status = 301, array $headers = [])
+    {
+        $this->withHeaders($headers);
+        $this->withHeader(Headers::LOCATION, $target);
+        $this->withStatus($status);
+
+        return $this;
+    }
+
     /**
      * Dispatches the request
      *
@@ -159,6 +175,14 @@ class Response extends Message implements ResponseInterface
         if (! is_string($this->getBody())) {
             $this->asJson();
         }
+
+        foreach ($this->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header(sprintf('%s: %s', $name, $value), false);
+            }
+        }
+
+        http_response_code($this->getStatusCode());
 
         switch ($this->getHeaderLine(Headers::CONTENT_TYPE)) {
             case 'application/json':

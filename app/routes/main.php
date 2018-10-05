@@ -35,8 +35,10 @@ Router::get(
     }
 );
 
-Router::get('/controller', \MessengerPeople\Api\Controllers\TestController::class);
 
-Router::get('/controller/{id}', 'MessengerPeople\Api\Controllers\TestController@show');
 
-Router::resource('books', \MessengerPeople\Api\Controllers\TestController::class);
+Router::get('/controller', \Shore\App\Controllers\TestController::class);
+
+Router::get('/controller/{id}', 'Shore\App\Controllers\TestController@show');
+
+Router::resource('books', \Shore\App\Controllers\TestController::class);
