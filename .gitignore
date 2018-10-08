@@ -9,6 +9,7 @@ composer.lock
 
 # Application custom code
 app/config/**
+!app/config/app.php
 app/Controllers/**
 app/Facades/**
 app/Middleware/**
