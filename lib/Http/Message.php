@@ -27,7 +27,7 @@ class Message implements MessageInterface
      *
      * @param mixed $body Body data
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException When the body is not valid.
      */
     public function withBody($body): MessageInterface
@@ -55,7 +55,7 @@ class Message implements MessageInterface
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withHeader(string $name, string $value): MessageInterface
@@ -72,10 +72,10 @@ class Message implements MessageInterface
      *
      * @param string[] $headers Array of case-insensitive header field name.
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withHeaders(array $headers = []): MessageInterface
+    public function withHeaders(?array $headers = []): MessageInterface
     {
         foreach ($headers as $name => $value) {
             $this->withHeader($name, $value);
@@ -92,8 +92,7 @@ class Message implements MessageInterface
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      *
-     * @return \Shore\Framework\MessageInterface
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @return \Shore\Framework\Specifications\MessageInterface
      */
     public function withAddedHeader(string $name, $value): MessageInterface
     {
@@ -122,7 +121,7 @@ class Message implements MessageInterface
      *
      * @param string $name Case-insensitive header field name to remove.
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      */
     public function withoutHeader(string $name): MessageInterface
     {

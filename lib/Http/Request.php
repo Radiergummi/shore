@@ -363,7 +363,7 @@ class Request extends Message implements RequestInterface
         return $this;
     }
 
-    public function path(string $append = ''): string
+    public function path(?string $append = ''): string
     {
         return $this->uri()->getPath() . $append;
     }

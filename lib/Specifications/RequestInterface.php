@@ -31,7 +31,7 @@ interface RequestInterface
      *
      * @return string
      */
-    public function path(string $append = ''): string;
+    public function path(?string $append = ''): string;
 
     /**
      * Sets the request path

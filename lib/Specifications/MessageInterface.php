@@ -122,7 +122,7 @@ interface MessageInterface
      * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
-    public function withHeaders(array $headers = []): MessageInterface;
+    public function withHeaders(?array $headers = []): MessageInterface;
 
     /**
      * Appends the specified value to the given header.

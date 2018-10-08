@@ -39,7 +39,7 @@ class Uri
 
     protected $query;
 
-    public function __construct(string $uri = null)
+    public function __construct(?string $uri = null)
     {
         if (! $uri) {
             return;
@@ -275,7 +275,7 @@ class Uri
         return $this;
     }
 
-    public function withCredentials(string $username, string $password = null): Uri
+    public function withCredentials(string $username, ?string $password = null): Uri
     {
         $this->username = static::normalizeCredential($username);
 

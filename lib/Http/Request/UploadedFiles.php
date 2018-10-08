@@ -38,7 +38,7 @@ class UploadedFiles
      * @param string|null                      $name Name of the field the file has been uploaded as. Defaults to the
      *                                               filename.
      */
-    public function addFile(UploadedFile $file, string $name = null): void
+    public function addFile(?UploadedFile $file, ?string $name = null): void
     {
         $this->files[$name ?? $file->getFilename()] = $file;
     }

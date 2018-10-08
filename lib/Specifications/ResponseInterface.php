@@ -13,7 +13,7 @@ interface ResponseInterface
 {
     public function dispatch(): string;
 
-    public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface;
+    public function withStatus(int $code, ?string $reasonPhrase = ''): ResponseInterface;
 
     public function getStatusCode(): int;
 

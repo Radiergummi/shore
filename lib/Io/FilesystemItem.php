@@ -5,29 +5,18 @@ namespace Shore\Framework\Io;
 use Exception;
 use InvalidArgumentException;
 use Shore\Framework\Exception\Io\InvalidPathException;
+use Shore\Framework\Specifications\FilesystemItemInterface;
 use SplFileInfo;
-use SplFileObject;
 
-abstract class FilesystemItem
+/**
+ * Filesystem item
+ * ===============
+ * Base class for all filesystem items to inherit from. Provides base methods around dealing with metadata properties.
+ *
+ * @package Shore\Framework\Io
+ */
+abstract class FilesystemItem implements FilesystemItemInterface
 {
-    public const OPEN_MODE_APPEND = 'a';
-
-    public const OPEN_MODE_APPEND_READ = 'a+';
-
-    public const OPEN_MODE_READ = 'r';
-
-    public const OPEN_MODE_READ_WRITE = 'r+';
-
-    public const OPEN_MODE_READ_WRITE_NEW = 'w+';
-
-    public const OPEN_MODE_WRITE = 'w';
-
-    public const TIMESTAMP_ACCESS = 0;
-
-    public const TIMESTAMP_CHANGE = 1;
-
-    public const TIMESTAMP_MODIFICATION = 2;
-
     /**
      * Holds the file path
      *
@@ -50,7 +39,7 @@ abstract class FilesystemItem
      *
      * @throws \Exception
      */
-    public function __construct(string $path, bool $verifyPath = true)
+    public function __construct(string $path, ?bool $verifyPath = true)
     {
         $exists = file_exists($path);
 
@@ -112,23 +101,6 @@ abstract class FilesystemItem
         return $this->meta;
     }
 
-    /**
-     * Generates an SplFileObject handle for the file, if not already generated.
-     *
-     * @param string $openMode Mode to open the file in. Can use the OPEN_MODE_ constants for the file.
-     *
-     * @return \SplFileObject
-     */
-    public function getHandle(string $openMode = self::OPEN_MODE_READ_WRITE): SplFileObject
-    {
-        if (! $this->handle || $this->currentMode !== $openMode) {
-            $this->currentMode = $openMode;
-            $this->handle = $this->getMeta()->openFile($openMode);
-        }
-
-        return $this->handle;
-    }
-
     public function getSize(): int
     {
         return $this->getMeta()->getSize();
@@ -174,7 +146,7 @@ abstract class FilesystemItem
         return $this->getMeta()->getPerms();
     }
 
-    public function getTimestamp(int $timestampType = self::TIMESTAMP_MODIFICATION): int
+    public function getTimestamp(?int $timestampType = self::TIMESTAMP_MODIFICATION): int
     {
         $meta = $this->getMeta();
 
@@ -200,7 +172,7 @@ abstract class FilesystemItem
         return $this->path;
     }
 
-    public function getBasename(string $suffix = null): string
+    public function getBasename(?string $suffix = null): string
     {
         return $this->getMeta()->getBasename($suffix);
     }
@@ -210,11 +182,11 @@ abstract class FilesystemItem
         return $this->getMeta()->getFilename();
     }
 
-    public function getExtension(): string
-    {
-        return $this->getMeta()->getExtension();
-    }
-
+    /**
+     * Retrieves the parent directory of an item on the file system
+     *
+     * @return string
+     */
     public function getParentDirectory(): string
     {
         return $this->getMeta()->getPath();
@@ -225,9 +197,9 @@ abstract class FilesystemItem
      *
      * @param string $newName New name of the item, without directory
      *
-     * @return \Shore\Framework\Io\FilesystemItem Item instance
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface Item instance
      */
-    abstract public function rename(string $newName): FilesystemItem;
+    abstract public function rename(string $newName): FilesystemItemInterface;
 
     /**
      * Moves the filesystem item to a new path
@@ -235,9 +207,9 @@ abstract class FilesystemItem
      * @param string      $destinationPath New filesystem path
      * @param string|null $destinationName Optional new name. If omitted, the current name will be used.
      *
-     * @return \Shore\Framework\Io\FilesystemItem
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface
      */
-    abstract public function move(string $destinationPath, string $destinationName = null): FilesystemItem;
+    abstract public function move(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface;
 
     /**
      * Copies the filesystem item to a new path
@@ -245,9 +217,9 @@ abstract class FilesystemItem
      * @param string      $destinationPath Destination filesystem path
      * @param string|null $destinationName Optional new name. If omitted, the current name will be used.
      *
-     * @return \Shore\Framework\Io\FilesystemItem
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface
      */
-    abstract public function copy(string $destinationPath, string $destinationName = null): FilesystemItem;
+    abstract public function copy(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface;
 
     /**
      * Deletes the item from the filesystem.

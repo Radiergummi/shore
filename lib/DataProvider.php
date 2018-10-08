@@ -19,7 +19,7 @@ abstract class DataProvider implements Countable, JsonSerializable
      */
     protected $data = [];
 
-    public function __construct(array $data = [])
+    public function __construct(?array $data = [])
     {
         $this->data = $data;
     }

@@ -240,11 +240,12 @@ class Router implements RouterInterface
     /**
      * Registers a route on the router
      *
-     * @param string                                               $method       HTTP request method
-     * @param string                                               $uri          HTTP request URI
-     * @param callable|\Shore\Framework\ControllerInterface|string $handler      Route handler. May be a callable, a
-     *                                                                           controller instance or a fully
-     *                                                                           qualified class path
+     * @param string                                                              $method  HTTP request method
+     * @param string                                                              $uri     HTTP request URI
+     * @param callable|\Shore\Framework\Specifications\ControllerInterface|string $handler Route handler. May be a
+     *                                                                                     callable, a controller
+     *                                                                                     instance or a fully
+     *                                                                                     qualified class path
      */
     protected function register(string $method, string $uri, $handler): void
     {

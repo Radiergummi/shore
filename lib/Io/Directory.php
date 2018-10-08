@@ -6,6 +6,9 @@ use DirectoryIterator;
 use Iterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Shore\Framework\Specifications\DirectoryInterface;
+use Shore\Framework\Specifications\FileInterface;
+use Shore\Framework\Specifications\FilesystemItemInterface;
 
 /**
  * Directory
@@ -14,7 +17,7 @@ use RecursiveIteratorIterator;
  *
  * @package Shore\Framework\Io
  */
-class Directory extends FilesystemItem implements Iterator
+class Directory extends FilesystemItem implements Iterator, DirectoryInterface
 {
     /**
      * Holds a lazy-loaded iterator for the directory
@@ -55,10 +58,10 @@ class Directory extends FilesystemItem implements Iterator
      * @param string $fileName
      * @param string $content
      *
-     * @return \Shore\Framework\Io\File
+     * @return \Shore\Framework\Specifications\FileInterface
      * @throws \Exception
      */
-    public function createFile(string $fileName, string $content = null): File
+    public function createFile(string $fileName, ?string $content = null): FileInterface
     {
         $path = $this->getPath() . DIRECTORY_SEPARATOR . $fileName;
 
@@ -76,10 +79,10 @@ class Directory extends FilesystemItem implements Iterator
      *
      * @param string $fileName
      *
-     * @return \Shore\Framework\Io\File
+     * @return \Shore\Framework\Specifications\FileInterface
      * @throws \Exception
      */
-    public function getFile(string $fileName): File
+    public function getFile(string $fileName): FileInterface
     {
         $path = $this->getPath() . DIRECTORY_SEPARATOR . $fileName;
 
@@ -100,6 +103,11 @@ class Directory extends FilesystemItem implements Iterator
         return $this->iterator;
     }
 
+    /**
+     * Retrieves a recursive iterator for the current directory.
+     *
+     * @return \RecursiveIteratorIterator
+     */
     public function getRecursiveIterator(): RecursiveIteratorIterator
     {
         $iterator = new RecursiveDirectoryIterator(
@@ -183,9 +191,9 @@ class Directory extends FilesystemItem implements Iterator
      *
      * @param string $newName New name of the directory, without parent directory
      *
-     * @return \Shore\Framework\Io\FilesystemItem Item instance
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface Item instance
      */
-    public function rename(string $newName): FilesystemItem
+    public function rename(string $newName): FilesystemItemInterface
     {
         $newPath = $this->getParentDirectory() . PHP_EOL . $newName;
 
@@ -204,10 +212,10 @@ class Directory extends FilesystemItem implements Iterator
      * @param string      $destinationPath
      * @param string|null $destinationName
      *
-     * @return \Shore\Framework\Io\FilesystemItem
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface
      * @throws \Exception
      */
-    public function move(string $destinationPath, string $destinationName = null): FilesystemItem
+    public function move(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface
     {
         $path = static::normalizePath($destinationPath);
 
@@ -230,10 +238,10 @@ class Directory extends FilesystemItem implements Iterator
      * @param string      $destinationPath
      * @param string|null $destinationName
      *
-     * @return \Shore\Framework\Io\FilesystemItem
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface
      * @throws \Exception
      */
-    public function copy(string $destinationPath, string $destinationName = null): FilesystemItem
+    public function copy(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface
     {
         $path = static::normalizePath($destinationPath);
 

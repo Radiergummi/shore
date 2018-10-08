@@ -44,7 +44,7 @@ class ErrorHandler
      * @param callable      $formatter
      * @param callable|null $handler
      */
-    public function __construct(callable $formatter, callable $handler = null)
+    public function __construct(callable $formatter, ?callable $handler = null)
     {
         // Let's honor the INI settings.
         if (ini_get('display_errors') == false) {

@@ -31,7 +31,7 @@ class Server implements HttpServerInterface
      *
      * @param array $middlewares
      */
-    public function __construct(array $middlewares = [])
+    public function __construct(?array $middlewares = [])
     {
         foreach ($middlewares as $middleware) {
             $this->append($middleware);

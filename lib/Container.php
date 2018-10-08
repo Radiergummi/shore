@@ -54,7 +54,7 @@ abstract class Container implements ContainerInterface
      *          $app->get('acmeService') instanceof AcmeService // true
      *
      */
-    public function factory(string $serviceName, string $factoryClass, array $args = []): void
+    public function factory(string $serviceName, string $factoryClass, ?array $args = []): void
     {
         $this->register(
             $serviceName,

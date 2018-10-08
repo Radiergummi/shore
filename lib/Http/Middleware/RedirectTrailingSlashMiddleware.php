@@ -22,7 +22,7 @@ class RedirectTrailingSlashMiddleware implements MiddlewareInterface
      *
      * @param bool $useSlash Whether to use append or remove trailing slashes
      */
-    public function __construct(bool $useSlash = false)
+    public function __construct(?bool $useSlash = false)
     {
         $this->useSlash = $useSlash;
     }

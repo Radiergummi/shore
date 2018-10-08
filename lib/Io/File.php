@@ -3,6 +3,9 @@
 namespace Shore\Framework\Io;
 
 use Exception;
+use Shore\Framework\Specifications\FileInterface;
+use Shore\Framework\Specifications\FilesystemItemInterface;
+use SplFileObject;
 
 /**
  * File
@@ -11,7 +14,7 @@ use Exception;
  *
  * @package Shore\Framework\Io
  */
-class File extends FilesystemItem
+class File extends FilesystemItem implements FileInterface
 {
     /**
      * Holds the file data handle. This will only be populated if any of the non-metadata methods is invoked.
@@ -28,6 +31,23 @@ class File extends FilesystemItem
     protected $currentMode;
 
     /**
+     * Generates an SplFileObject handle for the file, if not already generated.
+     *
+     * @param string $openMode Mode to open the file in. Can use the OPEN_MODE_ constants for the file.
+     *
+     * @return \SplFileObject
+     */
+    public function getHandle(?string $openMode = self::OPEN_MODE_READ_WRITE): SplFileObject
+    {
+        if (! $this->handle || $this->currentMode !== $openMode) {
+            $this->currentMode = $openMode;
+            $this->handle = $this->getMeta()->openFile($openMode);
+        }
+
+        return $this->handle;
+    }
+
+    /**
      * Guesses the MIME type of a file
      *
      * @return string
@@ -41,6 +61,16 @@ class File extends FilesystemItem
         }
 
         return $mimeType;
+    }
+
+    /**
+     * Retrieves the extension of a file on the filesystem
+     *
+     * @return string
+     */
+    public function getExtension(): string
+    {
+        return $this->getMeta()->getExtension();
     }
 
     /**
@@ -114,9 +144,9 @@ class File extends FilesystemItem
      *
      * @param string $newName New name of the item, without directory
      *
-     * @return \Shore\Framework\Io\FilesystemItem Item instance
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface Item instance
      */
-    public function rename(string $newName): FilesystemItem
+    public function rename(string $newName): FilesystemItemInterface
     {
         $newPath = $this->getParentDirectory() . DIRECTORY_SEPARATOR . $newName;
 
@@ -135,10 +165,10 @@ class File extends FilesystemItem
      * @param string      $destinationPath New filesystem path
      * @param string|null $destinationName Optional new name. If omitted, the current name will be used.
      *
-     * @return \Shore\Framework\Io\FilesystemItem
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface
      * @throws \Exception
      */
-    public function move(string $destinationPath, string $destinationName = null): FilesystemItem
+    public function move(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface
     {
         $path = static::normalizePath($destinationPath);
 
@@ -161,10 +191,10 @@ class File extends FilesystemItem
      * @param string      $destinationPath Destination filesystem path
      * @param string|null $destinationName Optional new name. If omitted, the current name will be used.
      *
-     * @return \Shore\Framework\Io\FilesystemItem Copied instance
+     * @return \Shore\Framework\Specifications\FilesystemItemInterface Copied instance
      * @throws \Exception
      */
-    public function copy(string $destinationPath, string $destinationName = null): FilesystemItem
+    public function copy(string $destinationPath, ?string $destinationName = null): FilesystemItemInterface
     {
         $path = static::normalizePath($destinationPath);
 

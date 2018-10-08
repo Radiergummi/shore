@@ -24,7 +24,7 @@ trait JsonParsing
      * @return string Encoded JSON string
      * @throws \Exception If the supplied data can't be encoded
      */
-    protected function encodeJson($data, $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE): string
+    protected function encodeJson($data, ?int $options = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE): string
     {
         $encoded = json_encode(
             $data,
@@ -48,7 +48,7 @@ trait JsonParsing
      * @return mixed
      * @throws \Exception
      */
-    protected function decodeJson(string $json, int $options = JSON_BIGINT_AS_STRING)
+    protected function decodeJson(string $json, ?int $options = JSON_BIGINT_AS_STRING)
     {
         try {
             // If the throw flag isn't defined, define a fallback flag now. This only affects PHP versions < 7.3

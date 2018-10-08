@@ -96,7 +96,7 @@ class Kernel implements MiddlewareInterface
         // If the handler didn't return a response instance, we'll set the body of the response to whatever
         // the handler returned. The response itself will take care of format conversion.
         if (! $output instanceof ResponseInterface) {
-            /** @var \Shore\Framework\MessageInterface|\Shore\Framework\Specifications\ResponseInterface $response */
+            /** @var \Shore\Framework\Specifications\MessageInterface|\Shore\Framework\Specifications\ResponseInterface $response */
             return $response->withBody($output);
         }
 

@@ -98,7 +98,7 @@ class Response extends Message implements ResponseInterface
         599 => 'Network Connect Timeout Error',
     ];
 
-    public function __construct($body = '', int $status = 200, array $headers = [])
+    public function __construct($body = '', ?int $status = 200, ?array $headers = [])
     {
 
         $this->withStatus($status);
@@ -106,7 +106,7 @@ class Response extends Message implements ResponseInterface
         $this->withBody($body);
     }
 
-    public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
+    public function withStatus(int $code, ?string $reasonPhrase = ''): ResponseInterface
     {
         if (
             $code < static::MIN_STATUS_CODE_VALUE ||
@@ -149,7 +149,7 @@ class Response extends Message implements ResponseInterface
         return $this;
     }
 
-    public function error($reason, $status = 500)
+    public function error($reason, ?int $status = 500)
     {
         $this->withBody($reason);
         $this->withStatus($status);
@@ -157,7 +157,7 @@ class Response extends Message implements ResponseInterface
         return $this;
     }
 
-    public function redirect($target, $status = 301, array $headers = [])
+    public function redirect($target, ?int $status = 301, ?array $headers = [])
     {
         $this->withHeaders($headers);
         $this->withHeader(Headers::LOCATION, $target);

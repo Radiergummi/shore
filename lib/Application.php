@@ -99,13 +99,13 @@ class Application extends Container
      * @throws \Throwable
      */
     public function run(
-        $server = [],
-        $request = [],
-        $query = [],
-        $body = [],
-        $files = [],
-        $cookies = [],
-        $session = []
+        ?array $server = [],
+        ?array $request = [],
+        ?array $query = [],
+        ?array $body = [],
+        ?array $files = [],
+        ?array $cookies = [],
+        ?array $session = []
     ): string {
         $request = func_num_args() === 0
             ? Request::fromGlobals()
