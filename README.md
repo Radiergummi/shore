@@ -13,12 +13,22 @@ Of course, there's support for middleware, too.
 reasoning being, I find the responses way too bloated. I don't want to use streams as response bodies, but that prevents
 me from implementing PSR-7 all together, as well as the PSR-15 middleware standard - since that relies on PSR-7.
 
-So if you're looking for a small alternative to Laravel, Symfony at al to build your system upon, you've come to the 
-right place.
+So if you're looking for a small alternative to Laravel, Symfony at al to build your system upon however, you've come to 
+the right place.
+
+## Features
+ - Shore is _fast_: Currently, the whole framework stack takes around 0.01s to execute, including setup, route matching
+    and sending the responses.
+ - A framework you can understand: Take a look at the code, hack it, whatever. Everything's simple, thoroughly 
+   documented and open for exploration.
+ - No fixed layout whatsoever: There are three constants in the [index.php](./public/index.php) that define where
+   the code for your application is to be found. Just add some routes and build up the layout you desire.
+ - Real-world way to do things: No, Shore won't let you inject five different dispatchers to send XML/JSON/RPC/HTML. 
+   Sorry. It sends JSON or strings, just like that.
 
 ## Getting started
-Shore has no fixed layout whatsoever. There are three constants in the [index.php](./public/index.php) that define where
-the code for your application is to be found. Just add some routes and build up the layout you desire.
+Clone this repository at the root of your new project, add routes in the main route file and you're ready. To follow the
+flow of requests, start at [`public/index.php`](./public/index.php). Comments will guide you.
 
 ## Defining routes
 All routing has to happen in the main routes file which is `require_once`'d in [`app/bootstrap`](./app/bootstrap.php).  
