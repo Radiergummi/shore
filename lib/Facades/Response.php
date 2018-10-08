@@ -10,6 +10,7 @@ use Shore\Framework\ResponseInterface;
  * ===============
  *
  * @method static ResponseInterface create(string $body = '', int $code = 200, array $headers = [])
+ * @method static ResponseInterface error(string $reason = '', int $code = 500, array $headers = [])
  * @method static ResponseInterface redirect(string $target = '', int $code = 301, array $headers = [])
  * @package Shore\Framework\Facades
  */

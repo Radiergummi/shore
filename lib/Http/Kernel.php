@@ -5,6 +5,7 @@ namespace Shore\Framework\Http;
 use Exception;
 use Shore\Framework\Application;
 use Shore\Framework\Exception\Route\InternalServerErrorException;
+use Shore\Framework\Exception\Route\NotFoundException;
 use Shore\Framework\Exception\Route\RouteHandlerException;
 use Shore\Framework\MiddlewareInterface;
 use Shore\Framework\RequestHandlerInterface;
@@ -77,6 +78,8 @@ class Kernel implements MiddlewareInterface
                 $response,
                 ...array_values($route->getArgs())
             );
+        } catch (NotFoundException $exception) {
+            // TODO: Handle 404s correctly
         } /** @noinspection PhpRedundantCatchClauseInspection */
         catch (RouteHandlerException $exception) {
             // The route handler was unable to complete the request and did throw a specific exception to signal what

@@ -93,14 +93,15 @@ class Application extends Container
         $cookies = [],
         $session = []
     ): string {
-        $request = new Request(
-            $this,
-            $server,
-            $request,
-            $query,
-            $body,
-            $files
-        );
+        $request = func_num_args() === 0
+            ? Request::fromGlobals()
+            : new Request(
+                $server,
+                $request,
+                $query,
+                $body,
+                $files
+            );
 
         // Keep the request object in the container
         $this->register(RequestInterface::class, $request);
@@ -113,9 +114,8 @@ class Application extends Container
             ->run(
                 $request,
                 function($request) {
-                    return $this
-                        ->get(ResponseInterface::class)
-                        ->withBody('this is default');
+                    /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+                    return \Shore\Framework\Facades\Response::error('No route handler');
                 }
             )
             ->dispatch();

@@ -28,12 +28,4 @@ require_once ROOT . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 $app = require_once APP . 'bootstrap.php';
 
 // Execute the application
-echo $app->run(
-    $_SERVER,
-    $_REQUEST,
-    $_GET,
-    $_POST,
-    $_FILES,
-    $_COOKIE,
-    $_SESSION ?? []
-);
+echo $app->run();

@@ -2,20 +2,12 @@
 
 namespace Shore\Framework\Http;
 
-use Shore\Framework\Application;
 use Shore\Framework\Http\Request\Body;
 use Shore\Framework\Http\Request\Query;
 use Shore\Framework\RequestInterface;
 
 class Request extends Message implements RequestInterface
 {
-    /**
-     * Holds the application instance
-     *
-     * @var \Shore\Framework\Application
-     */
-    public $application;
-
     /**
      * Holds the request input
      *
@@ -40,28 +32,76 @@ class Request extends Message implements RequestInterface
     /**
      * Request constructor.
      *
-     * @param \Shore\Framework\Application $application
-     * @param array                        $server
-     * @param array                        $request
-     * @param array                        $query
-     * @param array                        $body
-     * @param array                        $files
+     * @param array $server
+     * @param array $request
+     * @param array $query
+     * @param array $body
+     * @param array $files
      *
      * @throws \Exception If the request body can't be parsed
      */
     public function __construct(
-        Application $application,
         array $server,
         array $request,
         array $query,
         array $body,
         array $files
     ) {
-        $this->application = $application;
         $this->server = $server;
-        $this->headers = getallheaders() ?? [];
-        $this->body = new Body($body);
+        $this->headers = $this->withHeaders(static::marshalHeaders($server));
+        $this->body = $this->withBody(new Body($body));
         $this->params = new Query($query);
+    }
+
+    /**
+     * Creates a new request from PHP global variables
+     *
+     * @return \Shore\Framework\RequestInterface
+     * @throws \Exception
+     */
+    public static function fromGlobals(): RequestInterface
+    {
+        return new static($_SERVER, $_REQUEST, $_GET, $_POST, $_FILES);
+    }
+
+    protected static function marshalHeaders(array $server)
+    {
+        $headers = [];
+
+        // Try to use the apache headers function
+        if (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers() ?? [];
+        }
+
+        foreach ($server as $key => $value) {
+            // Apache prefixes environment variables with REDIRECT_
+            // if they are added by rewrite rules
+            if (strpos($key, 'REDIRECT_') === 0) {
+                $key = substr($key, 9);
+
+                // We will not overwrite existing variables with the
+                // prefixed versions, though
+                if (array_key_exists($key, $server)) {
+                    continue;
+                }
+            }
+
+            if ($value && strpos($key, 'HTTP_') === 0) {
+                $name = strtr(strtolower(substr($key, 5)), '_', '-');
+                $headers[$name] = $value;
+
+                continue;
+            }
+
+            if ($value && strpos($key, 'CONTENT_') === 0) {
+                $name = 'content-' . strtolower(substr($key, 8));
+                $headers[$name] = $value;
+
+                continue;
+            }
+        }
+
+        return $headers;
     }
 
     /**
