@@ -91,6 +91,13 @@ interface FilesystemItemInterface
     public function isWritable(): bool;
 
     /**
+     * Checks whether the item exists
+     *
+     * @return bool
+     */
+    public function exists(): bool;
+
+    /**
      * Retrieves the numeric owning user ID
      *
      * @return int

@@ -3,6 +3,7 @@
 namespace Shore\Framework\Io;
 
 use Exception;
+use Shore\Framework\Hashable;
 use Shore\Framework\Specifications\FileInterface;
 use Shore\Framework\Specifications\FilesystemItemInterface;
 use SplFileObject;
@@ -14,7 +15,7 @@ use SplFileObject;
  *
  * @package Shore\Framework\Io
  */
-class File extends FilesystemItem implements FileInterface
+class File extends FilesystemItem implements FileInterface, Hashable
 {
     /**
      * Holds the file data handle. This will only be populated if any of the non-metadata methods is invoked.
@@ -215,5 +216,33 @@ class File extends FilesystemItem implements FileInterface
     public function delete(): void
     {
         unlink($this->getPath());
+    }
+
+    /**
+     * Allows to automatically hash the file from the Hash class, if it exists.
+     *
+     * @param string $algorithm
+     *
+     * @return string
+     */
+    public function toHash(string $algorithm): string
+    {
+        return $this->getHash($algorithm);
+    }
+
+    /**
+     * Retrieves the hash of the file, using the given algorithm
+     *
+     * @param string $algorithm
+     *
+     * @return string
+     */
+    public function getHash(string $algorithm): string
+    {
+        if ($this->exists()) {
+            return hash_file($algorithm, $this->getPath());
+        }
+
+        return hash($algorithm, $this->getPath());
     }
 }

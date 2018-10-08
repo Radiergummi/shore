@@ -82,6 +82,9 @@ class Application extends Container
 
         // Register the server
         $this->register(HttpServerInterface::class, $server);
+
+        // Register the hasher
+        $this->register(Hash::class, new Hash());
     }
 
     /**

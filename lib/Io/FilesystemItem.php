@@ -131,6 +131,11 @@ abstract class FilesystemItem implements FilesystemItemInterface
         return $this->getMeta()->isWritable();
     }
 
+    public function exists(): bool
+    {
+        return file_exists($this->getPath());
+    }
+
     public function getOwner(): int
     {
         return $this->getMeta()->getOwner();

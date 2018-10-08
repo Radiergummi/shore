@@ -39,10 +39,12 @@ class CallableController implements ControllerInterface
      * @param \Shore\Framework\Specifications\RequestInterface  $request
      * @param \Shore\Framework\Specifications\ResponseInterface $response
      *
+     * @param array                                             $args
+     *
      * @return ResponseInterface|mixed
      */
-    public function __invoke(RequestInterface $request, ResponseInterface $response)
+    public function __invoke(RequestInterface $request, ResponseInterface $response, ...$args)
     {
-        return ($this->callable)->call($this, $request, $response);
+        return ($this->callable)->call($this, $request, $response, ...$args);
     }
 }

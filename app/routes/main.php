@@ -1,5 +1,6 @@
 <?php
 
+use Shore\Framework\Facades\Filesystem;
 use Shore\Framework\Facades\Request;
 use Shore\Framework\Facades\Router;
 use Shore\Framework\Specifications\RequestInterface;
@@ -8,6 +9,10 @@ use Shore\Framework\Specifications\ResponseInterface;
 Router::get(
     '/',
     function() {
+        $codes = Filesystem::disk('uploads')->getFile('codes.txt');
+
+        var_dump($codes->getContent());
+
         return "welcome home dude: " . Request::uri() . ' ' . Request::method();
     }
 );

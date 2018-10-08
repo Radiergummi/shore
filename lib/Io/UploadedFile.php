@@ -4,6 +4,7 @@ namespace Shore\Framework\Io;
 
 use Exception;
 use Shore\Framework\Exception\Io\FileUploadException;
+use Shore\Framework\Facades\Hash;
 
 class UploadedFile extends File
 {
@@ -18,5 +19,21 @@ class UploadedFile extends File
         }
 
         parent::__construct($fileInfo['tmp_name']);
+    }
+
+    /**
+     * Saves the uploaded file at the target location
+     *
+     * @param string      $path
+     * @param null|string $newName
+     *
+     * @return \Shore\Framework\Io\File
+     * @throws \Exception
+     */
+    public function save(string $path, ?string $newName = null): File
+    {
+        $name = is_null($newName) ? Hash::from($this) : $newName;
+
+        $this->move(static::normalizePath($path) . DIRECTORY_SEPARATOR . $name);
     }
 }
