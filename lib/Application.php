@@ -29,6 +29,8 @@ use Shore\Framework\Specifications\RouterInterface;
  */
 class Application extends Container
 {
+    public const SERVICE_CONFIG = 'config';
+
     /**
      * Initializes the application. This is the place to attach core services and configure it.
      *
@@ -40,7 +42,7 @@ class Application extends Container
         $config = new Config($configData);
 
         // Register the configuration
-        $this->register('config', $config);
+        $this->register(static::SERVICE_CONFIG, $config);
 
         // Get the error handler in place as early as possible
         $this->bootstrapErrorHandler();
@@ -114,7 +116,7 @@ class Application extends Container
     protected function bootstrapErrorHandler(): void
     {
         /** @var \Shore\Framework\Config $config */
-        $config = $this->get('config');
+        $config = $this->get(static::SERVICE_CONFIG);
 
         if ($config->has('errors.formatter')) {
             $errorHandler = new ErrorHandler($config->get('errors.formatter'));
@@ -133,7 +135,7 @@ class Application extends Container
     protected function bootstrapFilesystem(): void
     {
         /** @var \Shore\Framework\Config $config */
-        $config = $this->get('config');
+        $config = $this->get(static::SERVICE_CONFIG);
 
         if ($filesystems = $config->get('filesystem', false)) {
             // Register all filesystems by name
@@ -152,7 +154,7 @@ class Application extends Container
     protected function bootstrapHttpServer(): void
     {
         /** @var \Shore\Framework\Config $config */
-        $config = $this->get('config');
+        $config = $this->get(static::SERVICE_CONFIG);
 
         // Collect the middleware to load
         $middleware = $config->get('middleware', []);
@@ -176,10 +178,13 @@ class Application extends Container
         $this->register(HttpServerInterface::class, $server);
     }
 
+    /**
+     * Bootstraps the application services
+     */
     protected function bootstrapAppServices(): void
     {
         /** @var \Shore\Framework\Config $config */
-        $config = $this->get('config');
+        $config = $this->get(static::SERVICE_CONFIG);
 
         $services = $config->get('services', []);
 
