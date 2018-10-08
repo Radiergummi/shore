@@ -115,20 +115,6 @@ class Router implements RouterInterface
         $this->register(static::METHOD_HEAD, $uri, $handler);
     }
 
-    /**
-     * Creates a resource route. This is essentially just a shortcut for doing it by yourself.
-     *
-     * @param string $name
-     * @param string $controllerName
-     */
-    public function resource(string $name, string $controllerName)
-    {
-        $this->get("/$name", "$controllerName@index");
-        $this->post("/$name", "$controllerName@create");
-        $this->get("/$name/{id}", "$controllerName@show");
-        $this->put("/$name/{id}", "$controllerName@update");
-        $this->delete("/$name/{id}", "$controllerName@destroy");
-    }
 
     /**
      * Matches a request URI against all registered routes. Matching happens incrementally: We first try to find a

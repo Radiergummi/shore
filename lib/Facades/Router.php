@@ -6,7 +6,9 @@ use Shore\Framework\Facade;
 use Shore\Framework\Specifications\RouterInterface;
 
 /**
- * Router facade. Provides an easy way to register new routes on the router
+ * Router facade
+ * =============
+ * Provides an easy way to register new routes on the router
  *
  * @method static void any(string $uri, $handler)
  * @method static void get(string $uri, $handler)
@@ -15,7 +17,6 @@ use Shore\Framework\Specifications\RouterInterface;
  * @method static void delete(string $uri, $handler)
  * @method static void patch(string $uri, $handler)
  * @method static void head(string $uri, $handler)
- * @method static void resource(string $name, string $controller)
  * @method static void group(string $prefix, callable $callback)
  *
  * @package Shore\Framework\Facades
@@ -30,5 +31,20 @@ class Router extends Facade
     public static function getServiceId(): string
     {
         return RouterInterface::class;
+    }
+
+    /**
+     * Creates a resource route. This is essentially just a shortcut for doing it by yourself.
+     *
+     * @param string $name
+     * @param string $controllerName
+     */
+    public static function resource(string $name, string $controllerName)
+    {
+        static::get("/$name", "$controllerName@index");
+        static::post("/$name", "$controllerName@create");
+        static::get("/$name/{id}", "$controllerName@show");
+        static::put("/$name/{id}", "$controllerName@update");
+        static::delete("/$name/{id}", "$controllerName@destroy");
     }
 }
