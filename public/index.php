@@ -30,4 +30,4 @@ $app = require_once APP . 'bootstrap.php';
 // Execute the application
 echo $app->run();
 
-echo microtime(true) - START;
+echo "\nRequest took " . number_format(microtime(true) - START, 3) . 's';

@@ -52,6 +52,13 @@ Router::get('/books/{title}', '\Shore\App\Controllers\BooksController@byTitle');
 
 // Separated by a colon, you can pass arbitrary regular expression constraints for your placeholders
 Router::get('/books/{id:\d+}', '\Shore\App\Controllers\BooksController@byId');
+
+// Add a new route group. The group URI will be prefixed on all routes within the callback. Infinitely nestable!
+Router::group('/authors', function() {
+    
+    // This route will be available at /authors/search, as it's grouped
+    Router::get('/search', '\Shore\App\Controllers\AuthorsController@search');
+});
 ```
 
 ## Creating route handlers
@@ -104,13 +111,6 @@ return [
 
 They will be loaded in order of occurrence.
 
-## Facades
-Maybe you've spotted the `Facade` classes already. These are special classes that allow accessing instance methods on 
-your services via static calls, which makes certain aspects easier to handle - without giving up on dependency 
-injection. Custom facades only need to implement a single call that returns the name of the service they wish to 
-provide, everything else is handled automatically.  
-You don't have to use the facades feature, but it will make your life easier.
-
 ## Dependency injection
 At the core of Shore sits the `Application` instance which implements the PSR-11 container interface. It holds all your
 services and is set as the context of any route handler. What is a service, you ask? Well, just anything, identified by
@@ -118,3 +118,50 @@ a string. You can use that string to retrieve services throughout the lifecycle 
 To stick with the DI paradigm, it's often a good idea to use the class path of an interface as the service ID: 
 `DatabaseInterface::class`, for example. Should you switch out the database later on, you'll only need to do so in one 
 place, without risking missing it somewhere.
+
+To add your own services, add the `services` key to your application config array and insert your services into that:
+
+```php
+<?php
+return [
+    'services' => [
+        'database' => new DatabaseConnection($dbConfig),
+        MessageQueueInterface::class => new RedisQueue($redisConfig)
+    ]
+];
+```
+
+They will be registered with the name you passed as the key, so inside any route handler, you can use the following to 
+access your service:
+
+```php
+    // ...
+    $db = $this->get('database'); // Wham! There is your configured instance.
+```
+
+## Facades
+Maybe you've spotted the `Facade` classes already. These are special classes that allow accessing instance methods on 
+your services via static calls, which makes certain aspects easier to handle - without giving up on dependency 
+injection. Custom facades only need to implement a single call that returns the name of the service they wish to 
+provide, everything else is handled automatically.  
+You don't have to use the facades feature, but it will make your life easier. Let's create a fully functional facade for
+the database service from the previous section:
+
+```php
+<?php
+
+/**
+* @method static array query(string $sql)
+ */
+class Database extends \Shore\Framework\Facade {
+    public static function getServiceId(): string {
+        return 'database';
+    }
+}
+
+// Use like:
+$results = Database::query('SELECT * from BORING_EXAMPLES');
+```
+
+Yup. That's it. Pro tip: Add annotations for your methods in the doc block. That way, your IDE can even autocomplete 
+facade methods! Awesome!

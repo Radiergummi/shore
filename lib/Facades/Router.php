@@ -16,6 +16,7 @@ use Shore\Framework\Specifications\RouterInterface;
  * @method static void patch(string $uri, $handler)
  * @method static void head(string $uri, $handler)
  * @method static void resource(string $name, string $controller)
+ * @method static void group(string $prefix, callable $callback)
  *
  * @package Shore\Framework\Facades
  */

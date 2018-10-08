@@ -171,4 +171,16 @@ class Application extends Container
         // Register the server
         $this->register(HttpServerInterface::class, $server);
     }
+
+    protected function bootstrapAppServices(): void
+    {
+        /** @var \Shore\Framework\Config $config */
+        $config = $this->get('config');
+
+        $services = $config->get('services', []);
+
+        foreach ($services as $name => $service) {
+            $this->register($name, $service);
+        }
+    }
 }

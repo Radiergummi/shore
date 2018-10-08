@@ -57,6 +57,29 @@ class Router implements RouterInterface
      */
     protected $routes = [];
 
+    protected $prefix = '';
+
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    public function setPrefix(string $prefix): void
+    {
+        $this->prefix = $prefix;
+    }
+
+    public function group($prefix, $callback)
+    {
+        $oldPrefix = $this->getPrefix();
+        $this->setPrefix($oldPrefix . $prefix);
+
+        // Execute the group definition callback, passing the current router instance as a parameter
+        $callback($this);
+
+        $this->setPrefix($oldPrefix);
+    }
+
     public function any(string $uri, $handler): void
     {
         $this->register(static::METHOD_ANY, $uri, $handler);
@@ -249,7 +272,7 @@ class Router implements RouterInterface
      */
     protected function register(string $method, string $uri, $handler): void
     {
-        $route = new Route($uri, $handler);
+        $route = new Route($this->getPrefix() . $uri, $handler);
 
         if (! isset($this->routes[$method])) {
             $this->routes[$method] = [];
