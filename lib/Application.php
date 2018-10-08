@@ -42,15 +42,19 @@ class Application extends Container
         // Register the configuration
         $this->register('config', $config);
 
+        // Get the error handler in place as early as possible
         $this->bootstrapErrorHandler();
-        $this->bootstrapFilesystem();
-        $this->bootstrapHttpServer();
 
         // Register the hasher
         $this->register(Hash::class, new Hash());
 
         // Set the timezone
         date_default_timezone_set($config->get('timezone', 'UTC'));
+
+        // Bootstrap all other aspects of the app
+        $this->bootstrapFilesystem();
+        $this->bootstrapHttpServer();
+        $this->bootstrapAppServices();
     }
 
     /**
