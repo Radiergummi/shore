@@ -57,26 +57,52 @@ class Router implements RouterInterface
      */
     protected $routes = [];
 
+    /**
+     * Holds the URI prefix. Defaults to none.
+     *
+     * @var string
+     */
     protected $prefix = '';
 
+    /**
+     * Retrieves the URI prefix
+     *
+     * @return string
+     */
     public function getPrefix(): string
     {
         return $this->prefix;
     }
 
+    /**
+     * Sets the URI prefix for all routes
+     *
+     * @param string $prefix
+     */
     public function setPrefix(string $prefix): void
     {
         $this->prefix = $prefix;
     }
 
-    public function group($prefix, $callback)
+    /**
+     * Adds a new URI group to the router. Any routes defined in the callback will have their URI prefixed with the
+     * prefix. This allows to define routes of the same prefix easier.
+     *
+     * @param string   $prefix     URI prefix for the group
+     * @param callable $definition Definition callback
+     */
+    public function group(string $prefix, callable $definition): void
     {
+        // Store the current prefix
         $oldPrefix = $this->getPrefix();
+
+        // Append the new prefix to the old prefix
         $this->setPrefix($oldPrefix . $prefix);
 
         // Execute the group definition callback, passing the current router instance as a parameter
-        $callback($this);
+        $definition($this);
 
+        // Restore the old prefix
         $this->setPrefix($oldPrefix);
     }
 
@@ -114,7 +140,6 @@ class Router implements RouterInterface
     {
         $this->register(static::METHOD_HEAD, $uri, $handler);
     }
-
 
     /**
      * Matches a request URI against all registered routes. Matching happens incrementally: We first try to find a

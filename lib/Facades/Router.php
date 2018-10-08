@@ -17,7 +17,7 @@ use Shore\Framework\Specifications\RouterInterface;
  * @method static void delete(string $uri, $handler)
  * @method static void patch(string $uri, $handler)
  * @method static void head(string $uri, $handler)
- * @method static void group(string $prefix, callable $callback)
+ * @method static void group(string $prefix, callable $definition)
  *
  * @package Shore\Framework\Facades
  */
@@ -36,8 +36,8 @@ class Router extends Facade
     /**
      * Creates a resource route. This is essentially just a shortcut for doing it by yourself.
      *
-     * @param string $name
-     * @param string $controllerName
+     * @param string $name           Name of the resource, as used in the URI
+     * @param string $controllerName Name of the controller class
      */
     public static function resource(string $name, string $controllerName)
     {
