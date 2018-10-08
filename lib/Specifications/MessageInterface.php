@@ -1,6 +1,6 @@
 <?php
 
-namespace Shore\Framework;
+namespace Shore\Framework\Specifications;
 
 /**
  * HTTP message interface
@@ -23,7 +23,7 @@ interface MessageInterface
      *
      * @param mixed $body Body data
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException When the body is not valid.
      */
     public function withBody($body): MessageInterface;
@@ -107,7 +107,7 @@ interface MessageInterface
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withHeader(string $name, string $value): MessageInterface;
@@ -119,7 +119,7 @@ interface MessageInterface
      *
      * @param string[] $headers Array of case-insensitive header field name.
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withHeaders(array $headers = []): MessageInterface;
@@ -132,7 +132,7 @@ interface MessageInterface
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withAddedHeader(string $name, $value): MessageInterface;
@@ -142,7 +142,7 @@ interface MessageInterface
      *
      * @param string $name Case-insensitive header field name to remove.
      *
-     * @return \Shore\Framework\MessageInterface
+     * @return \Shore\Framework\Specifications\MessageInterface
      */
     public function withoutHeader(string $name): MessageInterface;
 }

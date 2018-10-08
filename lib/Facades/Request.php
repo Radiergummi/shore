@@ -3,7 +3,7 @@
 namespace Shore\Framework\Facades;
 
 use Shore\Framework\Facade;
-use Shore\Framework\RequestInterface;
+use Shore\Framework\Specifications\RequestInterface;
 
 /**
  * Request facade. Provides an easy way to access request properties.

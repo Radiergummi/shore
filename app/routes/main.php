@@ -2,8 +2,8 @@
 
 use Shore\Framework\Facades\Request;
 use Shore\Framework\Facades\Router;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 Router::get(
     '/',

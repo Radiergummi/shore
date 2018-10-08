@@ -3,9 +3,9 @@
 namespace Shore\Framework\Controller;
 
 use Closure;
-use Shore\Framework\ControllerInterface;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\ControllerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 /**
  * Callable controller
@@ -36,8 +36,8 @@ class CallableController implements ControllerInterface
     /**
      * Handles the controller call
      *
-     * @param \Shore\Framework\RequestInterface  $request
-     * @param \Shore\Framework\ResponseInterface $response
+     * @param \Shore\Framework\Specifications\RequestInterface  $request
+     * @param \Shore\Framework\Specifications\ResponseInterface $response
      *
      * @return ResponseInterface|mixed
      */

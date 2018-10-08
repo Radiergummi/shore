@@ -4,11 +4,11 @@ namespace Shore\Framework\Http;
 
 use Shore\Framework\Exception\Middleware\InvalidMiddlewareException;
 use Shore\Framework\Http\Middleware\CallableMiddleware;
-use Shore\Framework\HttpServerInterface;
-use Shore\Framework\MiddlewareInterface;
-use Shore\Framework\RequestHandlerInterface;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\HttpServerInterface;
+use Shore\Framework\Specifications\MiddlewareInterface;
+use Shore\Framework\Specifications\RequestHandlerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 /**
  * Middleware server
@@ -41,7 +41,7 @@ class Server implements HttpServerInterface
     /**
      * Appends a new middleware to the stack
      *
-     * @param \Shore\Framework\MiddlewareInterface|callable|\Closure $middleware
+     * @param \Shore\Framework\Specifications\MiddlewareInterface|callable|\Closure $middleware
      */
     public function append($middleware): void
     {
@@ -51,7 +51,7 @@ class Server implements HttpServerInterface
     /**
      * Prepends a new middleware to the stack
      *
-     * @param \Shore\Framework\MiddlewareInterface|callable|\Closure $middleware
+     * @param \Shore\Framework\Specifications\MiddlewareInterface|callable|\Closure $middleware
      */
     public function prepend($middleware): void
     {
@@ -61,10 +61,10 @@ class Server implements HttpServerInterface
     /**
      * Starts the HTTP server
      *
-     * @param \Shore\Framework\RequestInterface $request
-     * @param callable                               $default
+     * @param \Shore\Framework\Specifications\RequestInterface $request
+     * @param callable                                         $default
      *
-     * @return \Shore\Framework\ResponseInterface
+     * @return \Shore\Framework\Specifications\ResponseInterface
      */
     public function run(RequestInterface $request, callable $default): ResponseInterface
     {
@@ -95,9 +95,9 @@ class Server implements HttpServerInterface
              * Proceed to the next frame. This will continue to iterate through the middleware stack until a middleware
              * returns a response, which will halt the stack execution.
              *
-             * @param \Shore\Framework\RequestInterface $request
+             * @param \Shore\Framework\Specifications\RequestInterface $request
              *
-             * @return \Shore\Framework\ResponseInterface
+             * @return \Shore\Framework\Specifications\ResponseInterface
              */
             public function next(RequestInterface $request): ResponseInterface
             {
@@ -129,7 +129,7 @@ class Server implements HttpServerInterface
      *
      * @param callable|MiddlewareInterface $middleware Middleware to convert
      *
-     * @return \Shore\Framework\MiddlewareInterface Converted Middleware
+     * @return \Shore\Framework\Specifications\MiddlewareInterface Converted Middleware
      */
     protected function normalize($middleware): MiddlewareInterface
     {

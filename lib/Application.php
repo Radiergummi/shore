@@ -7,6 +7,10 @@ use Shore\Framework\Http\Request;
 use Shore\Framework\Http\Response;
 use Shore\Framework\Http\Server;
 use Shore\Framework\Routing\Router;
+use Shore\Framework\Specifications\HttpServerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
+use Shore\Framework\Specifications\RouterInterface;
 
 /**
  * Application
@@ -43,6 +47,16 @@ class Application extends Container
             }
 
             $errorHandler->register();
+        }
+
+        if (array_key_exists('filesystem', $config) && count($config['filesystem']) > 0) {
+            // Register all filesystems by name
+            foreach ($config['filesystem'] as $name => $filesystem) {
+                $this->register("filesystem:$name", $filesystem);
+            }
+
+            // Register the first filesystem as the default instance
+            $this->register('filesystem', array_shift($config['filesystem']));
         }
 
         // Register the configuration
@@ -106,14 +120,14 @@ class Application extends Container
         // Keep the request object in the container
         $this->register(RequestInterface::class, $request);
 
-        /** @var \Shore\Framework\HttpServerInterface $server */
+        /** @var \Shore\Framework\Specifications\HttpServerInterface $server */
         $server = $this->get(HttpServerInterface::class);
 
         // Run the server
         return $server
             ->run(
                 $request,
-                function($request) {
+                function() {
                     /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
                     return \Shore\Framework\Facades\Response::error('No route handler');
                 }

@@ -7,11 +7,11 @@ use Shore\Framework\Application;
 use Shore\Framework\Exception\Route\InternalServerErrorException;
 use Shore\Framework\Exception\Route\NotFoundException;
 use Shore\Framework\Exception\Route\RouteHandlerException;
-use Shore\Framework\MiddlewareInterface;
-use Shore\Framework\RequestHandlerInterface;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
-use Shore\Framework\RouterInterface;
+use Shore\Framework\Specifications\MiddlewareInterface;
+use Shore\Framework\Specifications\RequestHandlerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
+use Shore\Framework\Specifications\RouterInterface;
 
 /**
  * Kernel
@@ -37,10 +37,10 @@ class Kernel implements MiddlewareInterface
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      *
-     * @param \Shore\Framework\RequestInterface        $request
-     * @param \Shore\Framework\RequestHandlerInterface $handler
+     * @param \Shore\Framework\Specifications\RequestInterface        $request
+     * @param \Shore\Framework\Specifications\RequestHandlerInterface $handler
      *
-     * @return \Shore\Framework\ResponseInterface
+     * @return \Shore\Framework\Specifications\ResponseInterface
      * @throws \Shore\Framework\Exception\Route\InternalServerErrorException
      * @throws \Shore\Framework\Exception\Route\RouteHandlerException
      */
@@ -52,10 +52,10 @@ class Kernel implements MiddlewareInterface
     /**
      * Runs the route
      *
-     * @param \Shore\Framework\RequestInterface  $request
-     * @param \Shore\Framework\ResponseInterface $response
+     * @param \Shore\Framework\Specifications\RequestInterface  $request
+     * @param \Shore\Framework\Specifications\ResponseInterface $response
      *
-     * @return \Shore\Framework\ResponseInterface
+     * @return \Shore\Framework\Specifications\ResponseInterface
      * @throws \Shore\Framework\Exception\Route\InternalServerErrorException
      * @throws \Shore\Framework\Exception\Route\RouteHandlerException
      */
@@ -96,7 +96,7 @@ class Kernel implements MiddlewareInterface
         // If the handler didn't return a response instance, we'll set the body of the response to whatever
         // the handler returned. The response itself will take care of format conversion.
         if (! $output instanceof ResponseInterface) {
-            /** @var \Shore\Framework\MessageInterface|\Shore\Framework\ResponseInterface $response */
+            /** @var \Shore\Framework\MessageInterface|\Shore\Framework\Specifications\ResponseInterface $response */
             return $response->withBody($output);
         }
 

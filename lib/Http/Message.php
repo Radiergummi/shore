@@ -3,7 +3,7 @@
 namespace Shore\Framework\Http;
 
 use InvalidArgumentException;
-use Shore\Framework\MessageInterface;
+use Shore\Framework\Specifications\MessageInterface;
 
 class Message implements MessageInterface
 {

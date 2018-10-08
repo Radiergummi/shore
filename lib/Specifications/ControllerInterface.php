@@ -1,6 +1,6 @@
 <?php
 
-namespace Shore\Framework;
+namespace Shore\Framework\Specifications;
 
 /**
  * Controller interface

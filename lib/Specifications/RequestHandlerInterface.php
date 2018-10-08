@@ -1,6 +1,6 @@
 <?php
 
-namespace Shore\Framework;
+namespace Shore\Framework\Specifications;
 
 /**
  * Request handler interface
@@ -8,7 +8,7 @@ namespace Shore\Framework;
  * This interface defines the public API of request handler frames, so the second argument any middleware receives
  * implements this interface, guaranteeing the next() method to exist.
  *
- * @package Shore\Framework
+ * @package Shore\Framework\Specifications
  */
 interface RequestHandlerInterface
 {

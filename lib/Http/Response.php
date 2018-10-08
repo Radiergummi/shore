@@ -5,7 +5,7 @@ namespace Shore\Framework\Http;
 use InvalidArgumentException;
 use Shore\Framework\Http\Response\Headers;
 use Shore\Framework\JsonParsing;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 class Response extends Message implements ResponseInterface
 {
@@ -153,6 +153,8 @@ class Response extends Message implements ResponseInterface
     {
         $this->withBody($reason);
         $this->withStatus($status);
+
+        return $this;
     }
 
     public function redirect($target, $status = 301, array $headers = [])

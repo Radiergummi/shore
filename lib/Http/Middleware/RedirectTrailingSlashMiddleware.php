@@ -3,10 +3,10 @@
 namespace Shore\Framework\Http\Middleware;
 
 use Shore\Framework\Facades\Response;
-use Shore\Framework\MiddlewareInterface;
-use Shore\Framework\RequestHandlerInterface;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\MiddlewareInterface;
+use Shore\Framework\Specifications\RequestHandlerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 class RedirectTrailingSlashMiddleware implements MiddlewareInterface
 {
@@ -44,7 +44,7 @@ class RedirectTrailingSlashMiddleware implements MiddlewareInterface
     /**
      * Normalizes the request path by adding or removing the trailing slash
      *
-     * @param \Shore\Framework\RequestInterface $request
+     * @param \Shore\Framework\Specifications\RequestInterface $request
      *
      * @return string
      */

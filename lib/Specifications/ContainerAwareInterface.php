@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Shore\Framework;
+namespace Shore\Framework\Specifications;
 
 use Psr\Container\ContainerInterface;
 

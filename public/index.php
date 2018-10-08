@@ -29,3 +29,5 @@ $app = require_once APP . 'bootstrap.php';
 
 // Execute the application
 echo $app->run();
+
+echo microtime(true) - START;

@@ -3,8 +3,8 @@
 namespace Shore\Framework\Controller;
 
 use Psr\Container\ContainerInterface;
-use Shore\Framework\ContainerAwareInterface;
-use Shore\Framework\ControllerInterface;
+use Shore\Framework\Specifications\ContainerAwareInterface;
+use Shore\Framework\Specifications\ControllerInterface;
 
 /**
  * Base controller

@@ -1,13 +1,13 @@
 <?php
 
-namespace Shore\Framework;
+namespace Shore\Framework\Specifications;
 
 /**
  * Response interface
  * ==================
  * This interface defines the public API for response objects.
  *
- * @package Shore\Framework
+ * @package Shore\Framework\Specifications
  */
 interface ResponseInterface
 {

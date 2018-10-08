@@ -4,9 +4,8 @@ namespace Shore\Framework\Routing;
 
 use Shore\Framework\Exception\Route\NotFoundException;
 use Shore\Framework\Exception\Router\InvalidRequestMethodException;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
-use Shore\Framework\RouterInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\RouterInterface;
 
 /**
  * Router implementation
@@ -109,26 +108,6 @@ class Router implements RouterInterface
     }
 
     /**
-     * Registers a route on the router
-     *
-     * @param string                                                    $method  HTTP request method
-     * @param string                                                    $uri     HTTP request URI
-     * @param callable|\Shore\Framework\ControllerInterface|string $handler Route handler. May be a callable, a
-     *                                                                           controller instance or a fully
-     *                                                                           qualified class path
-     */
-    protected function register(string $method, string $uri, $handler): void
-    {
-        $route = new Route($uri, $handler);
-
-        if (! isset($this->routes[$method])) {
-            $this->routes[$method] = [];
-        }
-
-        $this->routes[$method][$route->getUri()] = $route;
-    }
-
-    /**
      * Matches a request URI against all registered routes. Matching happens incrementally: We first try to find a
      * direct match. If that fails, we'll assume the URI contains placeholders that need to be matched and try to do so.
      * During matching the placeholders, any routes that don't contain placeholders or start with another character
@@ -180,7 +159,7 @@ class Router implements RouterInterface
         );
 
         /**
-         * @var string                              $uri
+         * @var string                         $uri
          * @var \Shore\Framework\Routing\Route $route
          */
         foreach ($routes as $uri => $route) {
@@ -256,5 +235,25 @@ class Router implements RouterInterface
 
         // No routes found, PANIC!
         throw new NotFoundException($requestUri);
+    }
+
+    /**
+     * Registers a route on the router
+     *
+     * @param string                                               $method       HTTP request method
+     * @param string                                               $uri          HTTP request URI
+     * @param callable|\Shore\Framework\ControllerInterface|string $handler      Route handler. May be a callable, a
+     *                                                                           controller instance or a fully
+     *                                                                           qualified class path
+     */
+    protected function register(string $method, string $uri, $handler): void
+    {
+        $route = new Route($uri, $handler);
+
+        if (! isset($this->routes[$method])) {
+            $this->routes[$method] = [];
+        }
+
+        $this->routes[$method][$route->getUri()] = $route;
     }
 }

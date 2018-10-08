@@ -2,10 +2,10 @@
 
 namespace Shore\Framework\Http\Middleware;
 
-use Shore\Framework\MiddlewareInterface;
-use Shore\Framework\RequestHandlerInterface;
-use Shore\Framework\RequestInterface;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\MiddlewareInterface;
+use Shore\Framework\Specifications\RequestHandlerInterface;
+use Shore\Framework\Specifications\RequestInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 /**
  * Callable middleware

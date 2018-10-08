@@ -39,8 +39,51 @@ class Directory extends FilesystemItem implements Iterator
         return $children;
     }
 
-    public function getChildrenCount()
+    /**
+     * Retrieves the number of children items
+     *
+     * @return int
+     */
+    public function getChildrenCount(): int
     {
+        return iterator_count($this->getIterator());
+    }
+
+    /**
+     * Creates a file in the directory
+     *
+     * @param string $fileName
+     * @param string $content
+     *
+     * @return \Shore\Framework\Io\File
+     * @throws \Exception
+     */
+    public function createFile(string $fileName, string $content = null): File
+    {
+        $path = $this->getPath() . DIRECTORY_SEPARATOR . $fileName;
+
+        $file = new File($path);
+
+        if ($content) {
+            $file->write($content);
+        }
+
+        return $file;
+    }
+
+    /**
+     * Retrieves a file from the directory
+     *
+     * @param string $fileName
+     *
+     * @return \Shore\Framework\Io\File
+     * @throws \Exception
+     */
+    public function getFile(string $fileName): File
+    {
+        $path = $this->getPath() . DIRECTORY_SEPARATOR . $fileName;
+
+        return new File($path);
     }
 
     /**
@@ -204,7 +247,6 @@ class Directory extends FilesystemItem implements Iterator
         // Iterate the source directory recursively
         /** @var \SplFileInfo $child */
         foreach ($iterator = $this->getRecursiveIterator() as $child) {
-
             // Create directories in the destination path
             if ($child->isDir()) {
                 // RecursiveIteratorIterator forwards the getSubPathName() call to the RecursiveDirectoryIterator,

@@ -4,7 +4,7 @@ namespace Shore\Framework\Http;
 
 use Shore\Framework\Http\Request\Body;
 use Shore\Framework\Http\Request\Query;
-use Shore\Framework\RequestInterface;
+use Shore\Framework\Specifications\RequestInterface;
 
 class Request extends Message implements RequestInterface
 {
@@ -64,7 +64,7 @@ class Request extends Message implements RequestInterface
     /**
      * Creates a new request from PHP global variables
      *
-     * @return \Shore\Framework\RequestInterface
+     * @return \Shore\Framework\Specifications\RequestInterface
      * @throws \Exception
      */
     public static function fromGlobals(): RequestInterface
@@ -354,7 +354,7 @@ class Request extends Message implements RequestInterface
      *
      * @param string $path
      *
-     * @return \Shore\Framework\RequestInterface
+     * @return \Shore\Framework\Specifications\RequestInterface
      */
     public function withPath(string $path): RequestInterface
     {
@@ -383,7 +383,7 @@ class Request extends Message implements RequestInterface
      *
      * @param string $method
      *
-     * @return \Shore\Framework\RequestInterface
+     * @return \Shore\Framework\Specifications\RequestInterface
      */
     public function withMethod(string $method): RequestInterface
     {

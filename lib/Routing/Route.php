@@ -3,7 +3,7 @@
 namespace Shore\Framework\Routing;
 
 use Shore\Framework\Controller\CallableController;
-use Shore\Framework\ControllerInterface;
+use Shore\Framework\Specifications\ControllerInterface;
 use Shore\Framework\Exception\Router\InvalidRouteHandlerException;
 
 class Route

@@ -3,7 +3,7 @@
 namespace Shore\Framework\Facades;
 
 use Shore\Framework\Facade;
-use Shore\Framework\RouterInterface;
+use Shore\Framework\Specifications\RouterInterface;
 
 /**
  * Router facade. Provides an easy way to register new routes on the router

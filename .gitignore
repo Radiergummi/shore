@@ -16,3 +16,7 @@ app/routes/**
 !app/routes/main.php
 app/Services/**
 !app/**/.gitignore
+
+# Public files
+public/**/*
+!public/index.php

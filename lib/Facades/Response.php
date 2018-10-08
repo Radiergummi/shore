@@ -3,7 +3,7 @@
 namespace Shore\Framework\Facades;
 
 use Shore\Framework\Facade;
-use Shore\Framework\ResponseInterface;
+use Shore\Framework\Specifications\ResponseInterface;
 
 /**
  * Response Facade
