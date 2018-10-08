@@ -32,59 +32,25 @@ class Application extends Container
     /**
      * Initializes the application. This is the place to attach core services and configure it.
      *
-     * @param $config
+     * @param array $configData
      */
-    public function __construct($config)
+    public function __construct(array $configData)
     {
-        if (
-            array_key_exists('errors', $config) &&
-            array_key_exists('formatter', $config['errors'])
-        ) {
-            $errorHandler = new ErrorHandler($config['errors']['formatter']);
-
-            if (array_key_exists('handler', $config['errors'])) {
-                $errorHandler->setHandler($config['errors']['handler']);
-            }
-
-            $errorHandler->register();
-        }
-
-        if (array_key_exists('filesystem', $config) && count($config['filesystem']) > 0) {
-            // Register all filesystems by name
-            foreach ($config['filesystem'] as $name => $filesystem) {
-                $this->register("filesystem:$name", $filesystem);
-            }
-
-            // Register the first filesystem as the default instance
-            $this->register('filesystem', array_shift($config['filesystem']));
-        }
+        // Create a config instance
+        $config = new Config($configData);
 
         // Register the configuration
         $this->register('config', $config);
 
-        // Collect the middleware to load
-        $middleware = array_key_exists('middleware', $config) ? $config['middleware'] : [];
-
-        // Register the router using the router interface as the service ID. This allows to swap the router
-        // for another implementation later in the product lifecycle, as long as it implements the interface.
-        $this->register(RouterInterface::class, new Router());
-
-        // Register the response factory
-        $this->factory(ResponseInterface::class, Response::class);
-
-        // Create a new kernel instance. The kernel is the main middleware used to handle and respond to incoming
-        // requests, so it should be loaded as the last middleware in the stack.
-        $kernel = new Kernel($this, $this->get(RouterInterface::class));
-
-        // Create a new server instance. The server runs through all middleware layers, passing request and response
-        // between them.
-        $server = new Server(array_merge($middleware, [$kernel]));
-
-        // Register the server
-        $this->register(HttpServerInterface::class, $server);
+        $this->bootstrapErrorHandler();
+        $this->bootstrapFilesystem();
+        $this->bootstrapHttpServer();
 
         // Register the hasher
         $this->register(Hash::class, new Hash());
+
+        // Set the timezone
+        date_default_timezone_set($config->get('timezone', 'UTC'));
     }
 
     /**
@@ -136,5 +102,73 @@ class Application extends Container
                 }
             )
             ->dispatch();
+    }
+
+    /**
+     * Bootstraps the error handling
+     */
+    protected function bootstrapErrorHandler(): void
+    {
+        /** @var \Shore\Framework\Config $config */
+        $config = $this->get('config');
+
+        if ($config->has('errors.formatter')) {
+            $errorHandler = new ErrorHandler($config->get('errors.formatter'));
+
+            if ($config->has('errors.handler')) {
+                $errorHandler->setHandler($config->get('errors.handler'));
+            }
+
+            $errorHandler->register();
+        }
+    }
+
+    /**
+     * Bootstraps the filesystem integration
+     */
+    protected function bootstrapFilesystem(): void
+    {
+        /** @var \Shore\Framework\Config $config */
+        $config = $this->get('config');
+
+        if ($filesystems = $config->get('filesystem', false)) {
+            // Register all filesystems by name
+            foreach ($filesystems as $name => $filesystem) {
+                $this->register("filesystem:$name", $filesystem);
+            }
+
+            // Register the first filesystem as the default instance
+            $this->register('filesystem', array_shift($filesystems));
+        }
+    }
+
+    /**
+     * Bootstraps the HTTP server stack
+     */
+    protected function bootstrapHttpServer(): void
+    {
+        /** @var \Shore\Framework\Config $config */
+        $config = $this->get('config');
+
+        // Collect the middleware to load
+        $middleware = $config->get('middleware', []);
+
+        // Register the router using the router interface as the service ID. This allows to swap the router
+        // for another implementation later in the product lifecycle, as long as it implements the interface.
+        $this->register(RouterInterface::class, new Router());
+
+        // Register the response factory
+        $this->factory(ResponseInterface::class, Response::class);
+
+        // Create a new kernel instance. The kernel is the main middleware used to handle and respond to incoming
+        // requests, so it should be loaded as the last middleware in the stack.
+        $kernel = new Kernel($this, $this->get(RouterInterface::class));
+
+        // Create a new server instance. The server runs through all middleware layers, passing request and response
+        // between them.
+        $server = new Server(array_merge($middleware, [$kernel]));
+
+        // Register the server
+        $this->register(HttpServerInterface::class, $server);
     }
 }

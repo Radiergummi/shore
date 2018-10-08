@@ -6,8 +6,24 @@ use DirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
+/**
+ * Directory Interface
+ * ===================
+ * Interface for directory instances on filesystems.
+ *
+ * @package Shore\Framework\Specifications
+ */
 interface DirectoryInterface
 {
+    /**
+     * Normalizes a path. Useful for virtual (non-existing) files, as it doesn't rely on realpath(1)
+     *
+     * @param string $path Path to normalize
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public static function normalizePath(string $path): string;
 
     /**
      * Retrieves all children of the directory. Shorthand for iterating by yourself.
@@ -34,6 +50,16 @@ interface DirectoryInterface
     public function createFile(string $fileName, ?string $content = null): FileInterface;
 
     /**
+     * Creates a directory in the directory
+     *
+     * @param string $name
+     *
+     * @return \Shore\Framework\Specifications\DirectoryInterface
+     * @throws \Exception
+     */
+    public function createDirectory(string $name): DirectoryInterface;
+
+    /**
      * Retrieves a file from the directory
      *
      * @param string $fileName
@@ -55,17 +81,6 @@ interface DirectoryInterface
      * @return \RecursiveIteratorIterator
      */
     public function getRecursiveIterator(): RecursiveIteratorIterator;
-
-
-    /**
-     * Normalizes a path. Useful for virtual (non-existing) files, as it doesn't rely on realpath(1)
-     *
-     * @param string $path Path to normalize
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public static function normalizePath(string $path): string;
 
     /**
      * Generates an SplFileInfo object for the item, if not already generated.

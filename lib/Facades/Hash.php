@@ -5,10 +5,12 @@ namespace Shore\Framework\Facades;
 use Shore\Framework\Facade;
 
 /**
- * Class Hash
+ * Hash facade
+ * ===========
+ * Provides a facade to the hashing service
  *
  * @method static string generate(int $bytes = 32)
- * @method static string from($input, bool $randomize = false, string $algorithm = \Shore\Framework\Hash::ALGORITHM_MD5)
+ * @method static string from($input, bool $randomize = false, string $algorithm = \Shore\Framework\Hash::ALGORITHM_PREFERRED_NON_CRYPTO)
  * @package Shore\Framework\Facades
  */
 class Hash extends Facade

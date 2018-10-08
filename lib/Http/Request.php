@@ -57,7 +57,11 @@ class Request extends Message implements RequestInterface
         $this->server = $server;
         $this->headers = static::marshalHeaders($server);
         $this->uri = static::marshalUri($server, $this->headers);
-        $this->body = $this->withBody(new Body($body));
+
+        if (in_array($this->method(), ['POST', 'PUT', 'PATCH'])) {
+            $this->body = $this->withBody(new Body($body));
+        }
+
         $this->params = new Query($query);
     }
 

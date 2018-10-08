@@ -30,7 +30,7 @@ class UploadedFile extends File
      * @return \Shore\Framework\Io\File
      * @throws \Exception
      */
-    public function save(string $path, ?string $newName = null): File
+    public function store(string $path, ?string $newName = null): File
     {
         $name = is_null($newName) ? Hash::from($this) : $newName;
 

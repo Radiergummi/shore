@@ -75,6 +75,24 @@ class Directory extends FilesystemItem implements Iterator, DirectoryInterface
     }
 
     /**
+     * Creates a directory in the directory
+     *
+     * @param string $name
+     *
+     * @return \Shore\Framework\Specifications\DirectoryInterface
+     * @throws \Exception
+     */
+    public function createDirectory(string $name): DirectoryInterface
+    {
+        $path = $this->getPath() . DIRECTORY_SEPARATOR . $name;
+
+        // Creates the directory recursively (mkdir -p)
+        mkdir($path, 0755, true);
+
+        return new Directory($path);
+    }
+
+    /**
      * Retrieves a file from the directory
      *
      * @param string $fileName
