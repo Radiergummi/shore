@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 04.10.2018
- * Time: 10:49
- */
 
 namespace Shore\Framework;
 

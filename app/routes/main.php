@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 16:21
- */
 
 use Shore\Framework\Facades\Request;
 use Shore\Framework\Facades\Router;

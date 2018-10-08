@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 01.10.2018
- * Time: 17:15
- */
 
 namespace Shore\Framework\Exception\Router;
 

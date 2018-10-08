@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 05.10.2018
- * Time: 15:22
- */
 
 namespace Shore\Framework\Controller;
 
